@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":6},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="此文对无人驾驶定义、等级，所涉及的技术、意义与挑战，以及可能遇到的哲学和伦理学问题展开一定思考和讨论。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动驾驶会有未来吗?">
+<meta property="og:url" content="https://etgo.cc/TheFutureOfAutoDriver/index.html">
+<meta property="og:site_name" content="以太快跑">
+<meta property="og:description" content="此文对无人驾驶定义、等级，所涉及的技术、意义与挑战，以及可能遇到的哲学和伦理学问题展开一定思考和讨论。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SAELevelsDefine.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SAELevelsDefine_hv.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SimpleSoftware.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/sensors_fusion.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/TeslaCrash.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/Moravecparadox%20.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/TrolleyProblem.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/NanJingTaxi.jpg">
+<meta property="article:published_time" content="2019-05-04T07:09:11.000Z">
+<meta property="article:modified_time" content="2021-02-18T12:37:54.092Z">
+<meta property="article:author" content="etgo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SAELevelsDefine.jpg">
+
+<link rel="canonical" href="https://etgo.cc/TheFutureOfAutoDriver/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>自动驾驶会有未来吗? | 以太快跑</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">以太快跑</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-me">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>me</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/TheFutureOfAutoDriver/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="etgo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="以太快跑">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自动驾驶会有未来吗?
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-04 15:09:11" itemprop="dateCreated datePublished" datetime="2019-05-04T15:09:11+08:00">2019-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-18 20:37:54" itemprop="dateModified" datetime="2021-02-18T20:37:54+08:00">2021-02-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B1%BD%E8%BD%A6%E7%94%B5%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">汽车电子</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">此文对无人驾驶定义、等级，所涉及的技术、意义与挑战，以及可能遇到的哲学和伦理学问题展开一定思考和讨论。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="自动驾驶的定义"><a href="#自动驾驶的定义" class="headerlink" title="自动驾驶的定义"></a>自动驾驶的定义</h2><p>此文所讨论的是指汽车的自动驾驶，不是飞机，也不是轮船。<br>在英文中我们它会叫做Autonomous Driving，强调了车具有了自主意识，有自我决策能力甚至可以完全的无人驾驶，也称为Self-Driving ， Driverless 或 Fully Automated Driving ，注意这些不同于Automated Driving，后者还停留在被动性的，没有自我决策的能力，我们常说的高级辅助驾驶(ADAS-Advanced Driving Assistant System)大约可归于此。<br>有不少机构对自动驾驶作过等级的划分，但目前最主流的当属SAE(Society of Automotive Engineers)的定义。目前最新版是201806的，参考如下链接：</p>
+<p><a target="_blank" rel="noopener" href="http://www.doc88.com/p-5798403180304.html">SAE J3016_201806</a>   </p>
+<p>根据系统参与驾驶的比重，失效时如何响应，以及它的设计运行范围。它把自动驾驶的级别分成了5级，如下图：<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SAELevelsDefine.jpg" alt="avatar"></p>
+<p><strong>DDT Dynamic driving task</strong> 动态驾驶任务，指汽车在道路上行驶所需的所有实时控制操作，主要是一些决策控制类的行为，不包括行程安排、目的地和途径地的选择等战略上的功能。<br><strong>OEDR Object and event detection and response</strong> 是对车辆周边环境监控和响应的意思，是感知和判断，可以通过对物体和事件检测、认知归类和并作出后续响应。<br><strong>DDT Fallback</strong> 动态驾驶任务支援，比如系统性的失效或者路况过于复杂超出了系统的判断决策能力时，如何进行支援。可以看出在Level 2水平时要完全由司机来处理，到了Level 3时系统就有了一定的自主决策能力了。<br><strong>ODD Operational Design Domain</strong>  是设计运行域的意思，指自动驾驶系统被设计的起作用的条件及适用范围，比如行驶区域范围，道路情况（直路、弯路的半径）、车速等，以确保系统的能力在安全的环境之内。    </p>
+<p>结合下图，对五个等级进一步解释：<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SAELevelsDefine_hv.jpg" alt="avatar"><br><strong>Level 1</strong><br>具有一定的驾驶辅助功能，它在横向或者纵向控制上二选一，比如加减速或者转向的控制，高速公路上具有定速巡航，车道保持功能的车处于这个级别。但所有的驾驶的操作和决策都还是由人完成。<br><strong>Level 2</strong><br>可以同时支持横向和纵向的控制，但驾驶员仍然需要实时监控环境，手要时刻放在方向盘上，同时要保证出问题时随时进行接管。此时系统也还不具备决策能力，比如特斯拉的自动驾驶就处于这个级别，目前顶多也只能算是2.5级，如当它要变道时，你要打转向灯告诉系统，系统才能启动变道的功能。<br><strong>Level 3</strong><br>它与L2最大的区别是系统具备了一定的自我决策能力，它能在某些情况下实现完全的自动驾驶，但是驾驶员仍要随时准备应对接管车辆，不同的是系统会在失效前给司机提示和预留一定的时间，比如当出现复杂环境系统无法响应时，它会做出反馈，可以预留十几秒或者更长的时间等人来接管控制权，并保证在这个时间内不出问题。<br>要注意领航和巡航是有很大差距的，L1、 L2只能实现巡航功能，就是跟着别的车后面走，到L3级别是可以实现领航了，就有了自主决策的能力，这个的技术难度和复杂度会增加很多。<br>2018年奥迪A8就达到了这个级别，它们称为Audi AI 交通拥堵自动驾驶系统TJP（Traffic Jam Pilot）<br>在交通拥堵的路段可以启动自动驾驶功能，驾驶员就可以完全不用管了，这个还是比较实用的，但在中国由于政策法规限制，这个功能现在无法用的，比如我们规定你的手不能长时离开方向盘。因为Level 3时仍需要一个驾驶员，并且要根据系统提示接管对车辆的控制，但车在路况好的时候人长时间不用关注车的驾驶，所以司机更容易走神，此时忽然遇到一个复杂情况系统无法处理，而驾驶员此时可能也无法回过神来。所以有些公司或机构在调研后认为这个级别更不安全不靠谱，直接忽略此级别，直接上更高级别，比如Google的Waymo。而传统的OEM和一级供应商可能会一个级别一个级别的去实现，不会采用相对激进的方式，也可能因为市场策略不同。<br><strong>Level 4</strong><br>在这个级别已经完全不需要人来参与了，但它是有限制的完全自动驾驶，比如在某个园区或者公园的内行驶，另外对速度等也有可能一定要求。百度和金龙客车合作的自动驾驶巴士“阿波龙”就属于这个级别，并且在车内你看不到驾驶位，并且没有了方向盘。它今年在很多地方都在试运营，这个已然不是PPT，是实实在在的产品了。<br><strong>Level 5</strong><br>这个级别是无限制的自动驾驶，可以理解为在一个城市内，或者城市间，在任何的复杂交通场景中，自动系统都能够胜任。这个级别是非常难以实现的。  </p>
+<h2 id="自动驾驶的技术"><a href="#自动驾驶的技术" class="headerlink" title="自动驾驶的技术"></a>自动驾驶的技术</h2><p>自动驾驶是一个知识密集且科技含量很高的技术，不基于点什么很难把它讲的相对清楚。做自动驾驶的公司也很多，而对于学习研究，百度的<a target="_blank" rel="noopener" href="http://apollo.auto/">Apollo开源平台</a>是一个很好的选择，我就根据这个平台，结合个人理解粗略地讲下自动驾驶所需技术。<br>无论诗和远方或是闲晃总会有一个目的，为了体验驾驶乐趣的闲晃这里不讨论，对自动驾驶而言，首先需要一个目的地。先告诉汽车让它知道要去哪里，定位出自己在哪里，然后再解决如何去，如果这些都是由汽车自动完成，就实现了高级别的自动驾驶。<br>如下图可以很好地解释自动驾驶的内涵：<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/SimpleSoftware.jpg" alt="avatar"><br>据此我们可大体猜测下要用到的技术：<br><strong>定位和规划</strong><br>要知道自己在哪儿，要有定位系统，就要用到GPS, 对于要厘米级的定位需要RTK技术，要用到IMU来互补GPS更新频率慢的问题，还需要用到激光雷达点云匹配定位以解决长时间没有GPS信号的问题，如能过山谷或隧道。我们所说的在哪是汽车要实时知道自己在高精度地图的坐标，在这个前提下，再有了目的地就可以实时路径规划给出车辆行进的大方向。<br><strong>感知和预测</strong><br>在行进的过程中，车辆要实时感知Perception周围的环境，并实时预测Prediction下一步如何动作，且有各种突发状况，这一部分可能是整个自动驾驶技术里最难的。要对目标进行Detection Classification，要Tracking，还涉及到传感器的融合Fusions，需要用到各种技术如CNNs，Machine Learning等等。所需运算量相当大，所有自动驾驶的CPU的运算性能要求特别高，要用到GPU最好是AI芯片。<br>此处要用到各种传感器组合使用，如Camera，LiDAR，Radar等，以实现冗余和高可靠性，具体原因参考下图。<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/sensors_fusion.jpg" alt="avatar">   </p>
+<p>这个是业界比较主流的做法。<br>特斯拉(Tesla)老板不信这个，坚决不用激光雷达，全球第一个自动驾驶引发死亡的案件就由此产生了，当时司机坐在Model S上，听说是在看哈里·波特，我想可能是西游记，然后系统就把白色的卡车车箱当作了空气当作了Nothing，全速撞了上去，司机直接和佛祖打牌去了。<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/TeslaCrash.jpg" alt="avatar"><br><strong>控制</strong><br>预测出汽车如何动作，还需要平滑的控制汽车的制动，这时又涉及到自动控制算法，对于自动驾驶车辆有个要求是能够线控的，比如刹车，油门，转向等都是可以计算机发命令来控制的。     </p>
+<p>至此自动驾驶所需技术定位，路径规划，感知，预测，控制技术就简单介绍完。另外我们注意到还有个联网功能，常说的Telematics或T-Box，目前的4G因带宽和延时还无法满足自动驾驶的要求，主要的功能是影音娱乐的功能，当5G普及后可能实现车辆协同的自动驾驶，比如超视距感知等功能。  </p>
+<h2 id="自动驾驶的意义"><a href="#自动驾驶的意义" class="headerlink" title="自动驾驶的意义"></a>自动驾驶的意义</h2><p><strong>安全</strong><br>最主要的原因是安全，因为根据世界卫生组织(World Health Organization)的调查统计数据，全世界每年有超过125万人死于车祸，而80%的原因是司机的人为因素。 人会有疲劳驾驶，注意力不集中，以及情绪问题，如路怒症，另外还有可能酒驾，人的响应速度也远没有传感器的响应速度快。<br>另外其实我们人类的大脑的进化还不是非常适应现代社会形态，工业社会只有两百多年，汽车的出现也就一百多年的历史，而我们人类大脑底层是亿万年进化的结果，大部分的时间又是处在狩猎和农耕时期，所以当我们看到一条蛇或者一些其它动物会产生本能的恐惧，而面对危险不知道多少倍的钢铁怪兽汽车却无动于衷，人类大脑其实可能远没有进化到符合现代社会的要求。所以人类自己开车可能并不是最安全的选择，或许再过几百年后有人驾驶汽车只会出现在汽车博物馆里，那时的人们可以会摸着方向盘踩着油门对当时居然是人类自己驾驶汽车这个危险的东西而感到不可思议。<br><strong>利益</strong><br>安全是很重要，但对于各大公司来讲这应当不是他们的驱动力，真正驱动他们投入巨大财力进行驾驶驾驶研发的是因为利益的追求和渴望以及对错失这个市场的恐惧。资本都是逐利的，都在想着抢占这个很快到来的的万亿级的市场。据有研究报告显示至2025年，自动驾驶市场规模将会达到2000亿至 1.9 万亿美元。<br><strong>颠覆</strong><br>当然也有可能有人因为更远大的目标比如改变世界，像乔布斯。<br>也有可能就是因为爱。<br>自动驾驶也确实可能成为一个颠覆性的技术。它可能会改变很多的行业甚至现在城市的格局。  </p>
+<h2 id="自动驾驶的挑战"><a href="#自动驾驶的挑战" class="headerlink" title="自动驾驶的挑战"></a>自动驾驶的挑战</h2><p>但是自动驾驶会很顺利的成为现实吗，在我看来很难。我从两个点简单讲一下：<br><strong>莫拉维克悖论 （Moravec‘s paradox）</strong><br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/Moravecparadox%20.jpg" alt="avatar"><br>是说对于人工智能和机器人来讲，人类所独有的逻辑推理能力只需要非常少的计算能力就实现，比如AlphGo，但是无意识的技能和对机器的控制却需要极大的运算能力和运算量。<br>有机构做过推算说，要让完全自动驾驶穷尽所有道路场景，需要100辆车，200年 7*24小时的训练，但这也不一定，可能会穷尽0.99可能的场景，但当仍会有不可预测性出现，那时计算机是束手无策的，远没有人类直觉应对保险。<br>举一个例子，一个人类的小孩从来没见过猫，你只需要给他一只猫，告诉他这是“猫咪”，下一次，当他见到不管什么颜色，什么样子的猫，他都知道这是“猫咪”。电脑不一样，就算你给它上百万张猫的照片，各种颜色，各种姿势，各种角度，你拿一只猫摆在它的摄像头面前，让它看个一年…… 它仍然不理解猫是什么，不能准确的判断一个东西是否是猫。比如谷歌训练计算机识别猫，当时Google研究人员利用一千台电脑的1.6万核处理器组建了一个机器学习神经网络。他们用从YouTube视频中提取出的1000万幅200x200缩略图训练神经网络来认识什么是猫。<br>人只需要一双眼睛去感知周围，然后靠感觉和经验就可以把车开的很好，不像自动驾驶，要用各种传感器的组合。人的驾驶目前才是真正的End-to-End ，直觉驾驶。<br>现在的机器学习”（machine learning），“深度学习”（deep learning），人工智能”（AI）其实跟人脑的思维方式有本质区别。</p>
+<p><strong>列车难题（Trolley Problem）</strong><br>假设当所有的技术难题因为一些天才般的构架或者无数工程师的日夜努力都解决了，自动驾驶还很有可能遇见道德的审问，比如列车难题，这是一个很著名的哲学难题。<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/TrolleyProblem.jpg" alt="avatar"><br>如图中所示，当一辆有轨车行驶过来，此时他的刹车失灵了，而速度非常快，但他此时仍可以转动方向盘，当它直行时会伤害到四个人，而转弯的话会伤害到一个人，这列车要不要转向呢，如果是你，你会怎么做呢？我想多数会选择转向杀死一个人来挽救四个人的生命。<br>此时我们在换个场景，假如列车无法转向，只有直直的一条轨道，而在这之上有一个天桥，此时天桥上正好站着一个大胖子，他就站在轨道正上面，如果此时你把他推下去，可以正好卡在轨道中间让列车停下来，牺牲了一个胖子来挽救四个人的生命，而此时你还会这样做吗？此时的选择可能就困难的多了。哲学会引发我们的思考，当你开始思考一些事情时你就再也无法停下来了，它会让我们对周围熟悉的事物感到陌生，一切仿佛都没有改变，但此时一切都已经不同了。<br>比如看过一个真实故事，在南京市的某路段，上班高峰的时段一辆出租车在正常行驶中，突然向路边的路墩上撞了去，一下整个车就四脚朝天。原因是出租车司机王师傅在路上驾驶中，自己突然觉得眼圈发黑，身体不适要晕厥，这时路的一侧有很多早上上班的行人，王师傅来不及过多的思考，果断的把方向盘往另一侧的路边的石墩撞去，出租车整个的就翻了过来。<br>当自动驾驶系统遇到此类问题时，它会优先如何做了，是优先保护车上的乘客还是外面的行人？<br><img src="https://gitee.com/oceanstack/image/raw/master/AutonomousDriving/NanJingTaxi.jpg" alt="avatar"><br>自动驾驶将来可能会遇到越来越多这类的问题，它如何决策如何应对将是一个很大的难题。 </p>
+<p><strong>可以预见自动驾驶面临的挑战远不止这些，但无论如何都不会阻止此技术前行，因人类前行的步伐永远不会停止，因此未来才有无限可能。</strong>  </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/SweetStamp/" rel="next" title="朱哥的美食轴">
+      朱哥的美食轴 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">自动驾驶的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E7%9A%84%E6%8A%80%E6%9C%AF"><span class="nav-number">2.</span> <span class="nav-text">自动驾驶的技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">3.</span> <span class="nav-text">自动驾驶的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%A9%BE%E9%A9%B6%E7%9A%84%E6%8C%91%E6%88%98"><span class="nav-number">4.</span> <span class="nav-text">自动驾驶的挑战</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">etgo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
