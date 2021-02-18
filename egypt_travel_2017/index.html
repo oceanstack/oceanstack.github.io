@@ -15,10 +15,40 @@
 
 <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
+
 <script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"etgo.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":6},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":6},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
 
   <meta name="description" content="2017年3月至6月我在埃及工作和生活2个多月。此行收获很多，就像电影《遇见你之前》里所说的，You need to widen your horizons. You only get one life. It&#39;s actually your duty to live it as fully as possible.">
 <meta property="og:type" content="article">
@@ -145,9 +175,10 @@
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'en'
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
   };
 </script>
 
@@ -190,6 +221,19 @@
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">以太快跑</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Ether Go</h1>
+      
+  </div>
+
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="Toggle navigation bar">
       <span class="toggle-line toggle-line-first"></span>
@@ -197,27 +241,11 @@
       <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">以太快跑</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">Ether Go</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
 </div>
 
 
-
-
 <nav class="site-nav">
+  
   <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
 
@@ -240,11 +268,8 @@
 
   </li>
   </ul>
+
 </nav>
-
-
-
-
 </div>
     </header>
 
@@ -260,13 +285,14 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content">
             
 
-    
+  <div class="posts-expand">
+      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
     <link itemprop="mainEntityOfPage" href="https://etgo.cc/egypt_travel_2017/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -279,9 +305,9 @@
       <meta itemprop="name" content="以太快跑">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
+        <h2 class="post-title" itemprop="name headline">
           2017 我在埃及
-        </h1>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -305,7 +331,9 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%94%9F%E6%B4%BB%E8%B6%A3%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">生活趣谈</span></a>
+                  <a href="/categories/%E7%94%9F%E6%B4%BB%E8%B6%A3%E8%B0%88/" itemprop="url" rel="index">
+                    <span itemprop="name">生活趣谈</span>
+                  </a>
                 </span>
             </span>
 
@@ -397,18 +425,21 @@
 
         
 
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/cooking_an_egg/" rel="next" title="煎鸡蛋和西红柿炒鸡蛋">
+                  <i class="fa fa-chevron-left"></i> 煎鸡蛋和西红柿炒鸡蛋
+                </a>
+            </div>
 
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/cooking_an_egg/" rel="prev" title="煎鸡蛋和西红柿炒鸡蛋">
-      <i class="fa fa-chevron-left"></i> 煎鸡蛋和西红柿炒鸡蛋
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/edma_introduce/" rel="next" title="EDMA 简介">
-      EDMA 简介 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/edma_introduce/" rel="prev" title="EDMA 简介">
+                  EDMA 简介 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
       </footer>
     
   </article>
@@ -416,32 +447,11 @@
   
   
 
+  </div>
 
 
           </div>
           
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
 
         </div>
           
@@ -472,8 +482,8 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="etgo"
-      src="/images/header.jpg">
+  <img class="site-author-image" itemprop="image" alt="etgo"
+    src="/images/header.jpg">
   <p class="site-author-name" itemprop="name">etgo</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -482,24 +492,24 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
   </nav>
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+        <a href="https://github.com/oceanstack" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail &amp;rarr; mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
       </span>
   </div>
 
@@ -519,8 +529,6 @@
       <div class="footer-inner">
         
 
-        
-
 <div class="copyright">
   
   &copy; 2019 – 
@@ -530,7 +538,10 @@
   </span>
   <span class="author" itemprop="copyrightHolder">etgo</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a>
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
         
@@ -545,6 +556,11 @@
 
 
 
+
+
+
+
+        
       </div>
     </footer>
   </div>
@@ -577,6 +593,7 @@
       s.parentNode.insertBefore(bp, s);
     })();
   </script>
+
 
 
 
