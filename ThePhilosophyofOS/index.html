@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.3.0">
+
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -13,44 +15,15 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
-<script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.5.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":6},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
-    },
-    sidebarPadding: 40
-  };
-</script>
-
-  <meta name="description" content="计算机科学的本质和操作系统中的哲学有没思考过？">
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="计算机科学的本质和操作系统中的哲学有没思考过？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="计算机科学的本质与操作系统中十条哲学原理">
 <meta property="og:url" content="https://etgo.cc/ThePhilosophyofOS/index.html">
@@ -66,131 +39,200 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/d8f5eab4c3935b2ae1c1fa481d1bee31426ba2cd/OS_Philosophy/1.png">
 
+
 <link rel="canonical" href="https://etgo.cc/ThePhilosophyofOS/">
 
 
-<script id="page-configurations">
+<script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
   };
 </script>
-
-  <title>计算机科学的本质与操作系统中十条哲学原理 | 以太快跑</title>
+<title>计算机科学的本质与操作系统中十条哲学原理 | 以太快跑</title>
   
-
-
 
 
 
 
   <noscript>
   <style>
-  .use-motion .brand,
+  body { margin-top: 2rem; }
+
   .use-motion .menu-item,
-  .sidebar-inner,
+  .use-motion .sidebar,
   .use-motion .post-block,
   .use-motion .pagination,
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
 
   .use-motion .site-title,
-  .use-motion .site-subtitle {
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
     opacity: initial;
     top: initial;
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
   </style>
 </noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
+  <main class="main">
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">以太快跑</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-        <h1 class="site-subtitle" itemprop="description">Ether Go</h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">以太快跑</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
     </div>
   </div>
 </div>
+
 
 
 <nav class="site-nav">
-  
-  <ul id="menu" class="menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
-
-  </li>
-        <li class="menu-item menu-item-me">
-
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>me</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
-
-  </li>
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-me"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>me</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
   </ul>
-
 </nav>
+
+
+
+
 </div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E4%B9%8B%E5%89%8D"><span class="nav-number">1.</span> <span class="nav-text">写在之前</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="nav-number">2.</span> <span class="nav-text">计算机科学的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E7%B2%BE%E7%A1%AE%E3%80%81%E7%BB%9D%E5%AF%B9-vs-%E4%B8%8D%E7%B2%BE%E7%A1%AE%E3%80%81%E7%9B%B8%E5%AF%B9"><span class="nav-number">2.1.</span> <span class="nav-text">一 精确、绝对 vs 不精确、相对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-%E8%87%AA%E7%84%B6%E5%AD%98%E5%9C%A8-vs-%E4%BA%BA%E7%B1%BB%E5%8F%91%E6%98%8E"><span class="nav-number">2.2.</span> <span class="nav-text">二 自然存在 vs 人类发明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E6%98%AF%E5%90%A6%E4%BE%9D%E8%B5%96%E4%BA%8E%E4%BA%BA%E7%9A%84%E4%B8%BB%E8%A7%82%E5%88%A4%E6%96%AD%E5%8A%9B"><span class="nav-number">2.3.</span> <span class="nav-text">三 是否依赖于人的主观判断力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B-%E8%BF%9D%E5%8F%8D%E4%BA%BA%E7%9A%84%E7%9B%B4%E8%A7%89-vs-%E7%AC%A6%E5%90%88%E4%BA%BA%E7%9A%84%E7%9B%B4%E8%A7%89"><span class="nav-number">2.4.</span> <span class="nav-text">四 违反人的直觉 vs 符合人的直觉</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E5%8D%81%E4%B8%AA%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">操作系统设计中的十个哲学原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E5%B1%82%E6%AC%A1%E6%9E%B6%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">第一条哲学原理：层次架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E6%B2%A1%E6%9C%89%E5%AF%B9%E9%94%99"><span class="nav-number">3.2.</span> <span class="nav-text">第二条哲学原理：没有对错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E6%87%92%E4%BA%BA%E5%93%B2%E5%AD%A6"><span class="nav-number">3.3.</span> <span class="nav-text">第三条哲学原理：懒人哲学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E8%AE%A9%E5%9B%B0%E4%BA%8E%E4%BA%BA"><span class="nav-number">3.4.</span> <span class="nav-text">第四条哲学原理：让困于人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E7%95%99%E6%9C%89%E4%BD%99%E5%9C%B0"><span class="nav-number">3.5.</span> <span class="nav-text">第五条哲学原理：留有余地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E5%AD%90%E8%99%9A%E4%B9%8C%E6%9C%89%E2%80%94%E2%80%94%E6%B5%B7%E5%B8%82%E8%9C%83%E6%A5%BC%E4%B9%8B%E7%BE%8E"><span class="nav-number">3.6.</span> <span class="nav-text">第六条哲学原理：子虚乌有——海市蜃楼之美</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%B6%E7%A9%BA%E8%BD%AC%E6%8D%A2%E2%80%94%E2%80%94%E6%B2%A7%E6%B5%B7%E6%A1%91%E7%94%B0%E4%B9%8B%E5%8F%98"><span class="nav-number">3.7.</span> <span class="nav-text">第七条哲学原理：时空转换——沧海桑田之变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E7%AD%96%E6%9C%BA%E5%88%86%E7%A6%BB%E4%B8%8E%E6%9D%83%E5%88%A9%E5%88%86%E7%A6%BB"><span class="nav-number">3.8.</span> <span class="nav-text">第八条哲学原理：策机分离与权利分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B9%9D%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E7%AE%80%E5%8D%95%E4%B8%BA%E7%BE%8E%E2%80%94%E2%80%94%E6%B1%82%E4%BA%8E%E8%87%B3%E7%AE%80%E3%80%81%E5%BD%92%E4%BA%8E%E6%B0%B8%E6%81%92"><span class="nav-number">3.9.</span> <span class="nav-text">第九条哲学原理：简单为美——求于至简、归于永恒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E9%80%82%E5%8F%AF%E8%80%8C%E6%AD%A2"><span class="nav-number">3.10.</span> <span class="nav-text">第十条哲学原理：适可而止</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E4%B9%8B%E5%90%8E"><span class="nav-number">4.</span> <span class="nav-text">写在之后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
     </header>
 
     
-  <div class="back-to-top">
+  <div class="back-to-top" role="button">
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
 
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
 
-          <div class="content">
-            
+    <div class="main-inner post posts-expand">
 
-  <div class="posts-expand">
-      
+
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://etgo.cc/ThePhilosophyofOS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -203,48 +245,48 @@
       <meta itemprop="name" content="以太快跑">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
+        <h1 class="post-title" itemprop="name headline">
           计算机科学的本质与操作系统中十条哲学原理
-        </h2>
+        </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-11-20 22:25:59" itemprop="dateCreated datePublished" datetime="2020-11-20T22:25:59+08:00">2020-11-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-18 20:47:38" itemprop="dateModified" datetime="2021-02-18T20:47:38+08:00">2021-02-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E5%9D%9B/" itemprop="url" rel="index">
-                    <span itemprop="name">技术杂坛</span>
-                  </a>
-                </span>
-            </span>
+      <time title="Created: 2020-11-20 22:25:59" itemprop="dateCreated datePublished" datetime="2020-11-20T22:25:59+08:00">2020-11-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-02-18 20:47:38" itemprop="dateModified" datetime="2021-02-18T20:47:38+08:00">2021-02-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E6%9D%82%E5%9D%9B/" itemprop="url" rel="index"><span itemprop="name">技术杂坛</span></a>
+        </span>
+    </span>
 
-          
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
             <div class="post-description">计算机科学的本质和操作系统中的哲学有没思考过？</div>
-
         </div>
       </header>
 
@@ -252,8 +294,6 @@
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
         <h1 id="写在之前"><a href="#写在之前" class="headerlink" title="写在之前"></a>写在之前</h1><p>这篇博文源于我在公司的一次技术分享 。没有涉及到具体的操作和原理的讲解，而是从更高一层哲学的抽象探讨的。  </p>
 <p>到了哲学层面的东西，看似很虚，但我认为它比具体的细节更加重要，所谓为学日益为道日损。<br>哲学是对基本和普遍之问题的研究的学科，其大无外其小无内，它具有最高的概括性和普适性，技术会被新的技术替代，而思想上却能够以不变应万变，就像那句话：所见的是暂时的，所不见的是永恒的。  </p>
 <p>关于操作系统之哲学原理，我首先从四个方面通过和自然学科的对比，我们要先认识到计算机科学的本质它是一门人造学科。然后在此基础上，又概括出十个操作系统设计中的哲学原理。当然严谨说的话我们是无法探究到任何事物的本质的，我们能看到的都是表象或者更深一层的表象 。     </p>
@@ -285,188 +325,81 @@
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
 
         
 
           <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-                <a href="/Abstruse_Goose/" rel="next" title="全玄鸿的深奥的鹅">
+            <div class="post-nav-item">
+                <a href="/Abstruse_Goose/" rel="prev" title="全玄鸿的深奥的鹅">
                   <i class="fa fa-chevron-left"></i> 全玄鸿的深奥的鹅
                 </a>
             </div>
-
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-                <a href="/PhonePhotoTech/" rel="prev" title="手机摄影技巧">
+            <div class="post-nav-item">
+                <a href="/PhonePhotoTech/" rel="next" title="手机摄影技巧">
                   手机摄影技巧 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
-      </footer>
-    
+    </footer>
   </article>
-  
-  
-  
-
-  </div>
-
-
-          </div>
-          
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          Table of Contents
-        </li>
-        <li class="sidebar-nav-overview">
-          Overview
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E4%B9%8B%E5%89%8D"><span class="nav-number">1.</span> <span class="nav-text">写在之前</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="nav-number">2.</span> <span class="nav-text">计算机科学的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80-%E7%B2%BE%E7%A1%AE%E3%80%81%E7%BB%9D%E5%AF%B9-vs-%E4%B8%8D%E7%B2%BE%E7%A1%AE%E3%80%81%E7%9B%B8%E5%AF%B9"><span class="nav-number">2.1.</span> <span class="nav-text">一 精确、绝对 vs 不精确、相对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C-%E8%87%AA%E7%84%B6%E5%AD%98%E5%9C%A8-vs-%E4%BA%BA%E7%B1%BB%E5%8F%91%E6%98%8E"><span class="nav-number">2.2.</span> <span class="nav-text">二 自然存在 vs 人类发明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89-%E6%98%AF%E5%90%A6%E4%BE%9D%E8%B5%96%E4%BA%8E%E4%BA%BA%E7%9A%84%E4%B8%BB%E8%A7%82%E5%88%A4%E6%96%AD%E5%8A%9B"><span class="nav-number">2.3.</span> <span class="nav-text">三 是否依赖于人的主观判断力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B-%E8%BF%9D%E5%8F%8D%E4%BA%BA%E7%9A%84%E7%9B%B4%E8%A7%89-vs-%E7%AC%A6%E5%90%88%E4%BA%BA%E7%9A%84%E7%9B%B4%E8%A7%89"><span class="nav-number">2.4.</span> <span class="nav-text">四 违反人的直觉 vs 符合人的直觉</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E5%8D%81%E4%B8%AA%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">操作系统设计中的十个哲学原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E5%B1%82%E6%AC%A1%E6%9E%B6%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">第一条哲学原理：层次架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E6%B2%A1%E6%9C%89%E5%AF%B9%E9%94%99"><span class="nav-number">3.2.</span> <span class="nav-text">第二条哲学原理：没有对错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E6%87%92%E4%BA%BA%E5%93%B2%E5%AD%A6"><span class="nav-number">3.3.</span> <span class="nav-text">第三条哲学原理：懒人哲学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E8%AE%A9%E5%9B%B0%E4%BA%8E%E4%BA%BA"><span class="nav-number">3.4.</span> <span class="nav-text">第四条哲学原理：让困于人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E7%95%99%E6%9C%89%E4%BD%99%E5%9C%B0"><span class="nav-number">3.5.</span> <span class="nav-text">第五条哲学原理：留有余地</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E5%AD%90%E8%99%9A%E4%B9%8C%E6%9C%89%E2%80%94%E2%80%94%E6%B5%B7%E5%B8%82%E8%9C%83%E6%A5%BC%E4%B9%8B%E7%BE%8E"><span class="nav-number">3.6.</span> <span class="nav-text">第六条哲学原理：子虚乌有——海市蜃楼之美</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E6%97%B6%E7%A9%BA%E8%BD%AC%E6%8D%A2%E2%80%94%E2%80%94%E6%B2%A7%E6%B5%B7%E6%A1%91%E7%94%B0%E4%B9%8B%E5%8F%98"><span class="nav-number">3.7.</span> <span class="nav-text">第七条哲学原理：时空转换——沧海桑田之变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E7%AD%96%E6%9C%BA%E5%88%86%E7%A6%BB%E4%B8%8E%E6%9D%83%E5%88%A9%E5%88%86%E7%A6%BB"><span class="nav-number">3.8.</span> <span class="nav-text">第八条哲学原理：策机分离与权利分离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B9%9D%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E7%AE%80%E5%8D%95%E4%B8%BA%E7%BE%8E%E2%80%94%E2%80%94%E6%B1%82%E4%BA%8E%E8%87%B3%E7%AE%80%E3%80%81%E5%BD%92%E4%BA%8E%E6%B0%B8%E6%81%92"><span class="nav-number">3.9.</span> <span class="nav-text">第九条哲学原理：简单为美——求于至简、归于永恒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E6%9D%A1%E5%93%B2%E5%AD%A6%E5%8E%9F%E7%90%86%EF%BC%9A%E9%80%82%E5%8F%AF%E8%80%8C%E6%AD%A2"><span class="nav-number">3.10.</span> <span class="nav-text">第十条哲学原理：适可而止</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E4%B9%8B%E5%90%8E"><span class="nav-number">4.</span> <span class="nav-text">写在之后</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <img class="site-author-image" itemprop="image" alt="etgo"
-    src="/images/header.jpg">
-  <p class="site-author-name" itemprop="name">etgo</p>
-  <div class="site-description" itemprop="description"></div>
 </div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">12</span>
-          <span class="site-state-item-name">posts</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">categories</span></a>
-      </div>
-  </nav>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 </div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/oceanstack" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail &amp;rarr; mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
-      </span>
-  </div>
+  </main>
 
+  <footer class="footer">
+    <div class="footer-inner">
 
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
 
 <div class="copyright">
-  
   &copy; 2019 – 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">etgo</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a>
-  </div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
-  </div>
-
-        
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
+    </div>
+  </footer>
 
   
-  <script>
-    (function(){
-      var bp = document.createElement('script');
-      var curProtocol = window.location.protocol.split(':')[0];
-      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(bp, s);
-    })();
-  </script>
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
-
-
-
-
-
-
-
-
-
+  
 
 
 
@@ -474,10 +407,13 @@
 
 
   
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
 
   
 
-  
 
 </body>
 </html>

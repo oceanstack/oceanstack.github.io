@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="什么是距离，什么是空间，它们数学中如何定义的？拓扑空间、度量空间、赋范空间、内积空间、巴拿赫空间、希尔伯特空间等等都是什么？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="空 间">
+<meta property="og:url" content="https://etgo.cc/math_space/index.html">
+<meta property="og:site_name" content="以太快跑">
+<meta property="og:description" content="什么是距离，什么是空间，它们数学中如何定义的？拓扑空间、度量空间、赋范空间、内积空间、巴拿赫空间、希尔伯特空间等等都是什么？">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/space/euclids_elements.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/space/metric.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/space/normed.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/space/inner_product.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/space/homeomorphism.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/space/spaces.jpg">
+<meta property="article:published_time" content="2021-02-21T11:30:00.000Z">
+<meta property="article:modified_time" content="2021-02-21T12:36:40.783Z">
+<meta property="article:author" content="etgo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/space/euclids_elements.jpg">
+
+
+<link rel="canonical" href="https://etgo.cc/math_space/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>空 间 | 以太快跑</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">以太快跑</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-me"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>me</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E4%B8%96%E7%95%8C"><span class="nav-number">1.</span> <span class="nav-text">三维世界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">空间概览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E7%AE%80%E4%BB%8B"><span class="nav-number">3.</span> <span class="nav-text">距离简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">不同空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E7%A9%BA%E9%97%B4"><span class="nav-number">4.1.</span> <span class="nav-text">度量空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%8B%E8%8C%83%E7%A9%BA%E9%97%B4"><span class="nav-number">4.2.</span> <span class="nav-text">赋范空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%A7%AF%E7%A9%BA%E9%97%B4"><span class="nav-number">4.3.</span> <span class="nav-text">内积空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B4%E6%8B%BF%E8%B5%AB%E7%A9%BA%E9%97%B4"><span class="nav-number">4.4.</span> <span class="nav-text">巴拿赫空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9%E7%A9%BA%E9%97%B4"><span class="nav-number">4.5.</span> <span class="nav-text">希尔伯特空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%93%E6%89%91%E7%A9%BA%E9%97%B4"><span class="nav-number">4.6.</span> <span class="nav-text">拓扑空间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">空间总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/math_space/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="etgo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="以太快跑">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          空 间
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-02-21 19:30:00 / Modified: 20:36:40" itemprop="dateCreated datePublished" datetime="2021-02-21T19:30:00+08:00">2021-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BF%83%E4%B8%AD%E6%9C%89%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">心中有数</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">什么是距离，什么是空间，它们数学中如何定义的？拓扑空间、度量空间、赋范空间、内积空间、巴拿赫空间、希尔伯特空间等等都是什么？</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="三维世界"><a href="#三维世界" class="headerlink" title="三维世界"></a>三维世界</h2><p>我们都生活在三维世界，我们的默认习惯性地思考也是基于所生活的三维世界，人类可能永远无法真实感知和理解超过三维的世界。<br>就像二维空间的生物是永远无法明白三维的世界，感兴趣的可以读下 英·埃德温·艾勃特（Edwin·A.·Abbott）的《平面国》。<br>现在流行的一个词，降维打击，比如三体中那个很牛X的武器：二相箔。降维打击在消灭你时跟你没有任何关系。   </p>
+<h2 id="空间概览"><a href="#空间概览" class="headerlink" title="空间概览"></a>空间概览</h2><p>如果我们从数学的视角去理解空间，将会更本质与深刻，其运用性也将更广泛。<br>数学的视角，空间的种类有很多，不同的空间具有不同的性质。<br>数学的空间基于研究的对象和遵循的规则，可以理解成是元素加上结构。<br>线性结构： 加法和数乘。<br>拓扑结构：距离、范数、开集。<br>人类所生活的现实世界也只不过是众多空间的一种。是三维的欧几里得空间（内积空间）。<br>我中学教科书中所学的都是欧几里得几何，这更符合我们现实世界，符合我们的直观感觉，以些可以更方便地锻炼我们的思维和解题能力。<br><img src="https://gitee.com/oceanstack/image/raw/master/space/euclids_elements.jpg" alt="avatar"><br>它是基于五条公理，经过逻辑推理认证构建出的一套知识体系。<br>此时再延伸一些，把第五条作了改变后建立了两套自洽的几何体系，罗巴切夫斯基几何与黎曼几何（爱因斯坦广义相对论所使用的数学工具就是黎曼几何）。   </p>
+<p>再回来，数学的空间还有包括：<br>拓扑空间、度量空间、赋范空间、内积空间、希尔伯特空间、巴拿赫空间等。    </p>
+<h2 id="距离简介"><a href="#距离简介" class="headerlink" title="距离简介"></a>距离简介</h2><p>不同的空间中有不同的定义，比如平面上两点的距离与球面上两点的距离定义就不同，再比如函数与函数之间的距离，再扩展下比如人与人之间的距离怎么度量呢，是按重心的距离还是按心灵的距离？<br>当然如果不考虑这些具体的场景，距离最底层最基本的要求需要满足三个条件，也就是说如果这三个条件有一个不满足，距离就无从谈起：<br>1、 非负。距离不能是个负数，要大于等于0。<br>2、 对称。从A到B的距离必须等于从B到A的距离。<br>3、 三角不等式。有A、B、C三点，AB+BC的距离必须≥AC的距离。类似“三角形两边之和大于第三边”。<br>同时距离不能单纯定义在实数或者向量上，而是定义到集合上，更加严谨的从集合的方法去定义如下：<br>设是$X$任一非空集，对$X$中任意元素$x,y$有一实数$d(x,y)$与之对应且满足：<br>1 非负性、同一性：$d(x,y) \geq 0$ ，且 $d(x,y) = 0$ 当且仅当$x=y$<br>2 对称性：$d(x,y)=d(y,x)$<br>3 直递性：$d(x,y) \le d(x,z) + d(z,y)$<br>称$d(x,y)$为$X$中的一个距离，定义了距离$d$的集$X$称为一个距离空间，记为$(\mathit{X},d)$，在不引起混乱的情形下简记为$X$。<br>就像对“连续”的定义也是通过集合。<br>但是仅这三个条件所定义的距离太过于宽泛。是一个没有什么约束的空间。<br>不同应用场景会有产生不同规则，就演化出很多不同的距离概念，比如：<br>欧氏距离(Euclidean Distance)<br>曼哈顿距离(Manhattan Distance)<br>切比雪夫距离(Chebyshev Distance)<br>闵可夫斯基距离(Minkowski Distance)<br>马氏距离(Mahalanobis Distance)<br>巴氏距离(Bhattacharyya Distance)<br>汉明距离(Hamming Distance)<br>杰卡德距离(Jaccard Distance)<br>等等，在此不一一介绍，感兴趣的可找资料研究。   </p>
+<h2 id="不同空间"><a href="#不同空间" class="headerlink" title="不同空间"></a>不同空间</h2><p>有了对距离最根本的认识后，可以通过层层加各种约束条件讨论空间这个概念了。   </p>
+<h3 id="度量空间"><a href="#度量空间" class="headerlink" title="度量空间"></a>度量空间</h3><p>度量空间 Metric Space<br>度量空间是一种具有度量函数(metric function)或者叫做距离函数(distance function)的集合，此函数定义集合内所有元素间的距离，被称为集合上的metric。<br>度量空间中最符合直观理解的是三维欧氏空间，事实上，metric的概念是欧氏距离性质的推广。<br><img src="https://gitee.com/oceanstack/image/raw/master/space/metric.jpg" alt="avatar"></p>
+<h3 id="赋范空间"><a href="#赋范空间" class="headerlink" title="赋范空间"></a>赋范空间</h3><p>赋范空间 Normed Space<br>在度量空间引入范数(norm)就成了赋范空间，什么是范数呢？<br>可以理解为它是一个比“距离”适用面更窄的表示距离的概念，它在“距离”的概念基础上加了一条必须满足“数乘”条件。<br>比如A的范数是范A，那么3倍的A的范数必须等于范A的3倍。<br>为什么会加上这条限制呢 ？<br>因为我们一直生活在满足范数的空间中，习以为常，但是在非线性空间中这个条件就不一定满足了，就不赋范空间空间了。<br><img src="https://gitee.com/oceanstack/image/raw/master/space/normed.jpg" alt="avatar">   </p>
+<p>如果再加上8个线性条件就是线性赋范空间。<br>8个线性条件包括：<br>1、加法交换律<br>2、加法结合律<br>3、零元的存在<br>4、负元的存在<br>5、数乘的交换律<br>6、单位元的存在<br>7、加法结合律<br>8、数乘结合律<br>感兴趣的可自行研究下。    </p>
+<h3 id="内积空间"><a href="#内积空间" class="headerlink" title="内积空间"></a>内积空间</h3><p>内积空间 Inner Product Space<br>线性赋范空间还不是我们真实生活的空间，它还少了两条线之间的夹角这一条件。<br>为方便计算，在数学中夹角用“内积”来表示 ，我们把满足内积条件的空间叫做“内积空间”，又叫做“欧几里得空间”<br>在这个空间了有了角度，垂直，投影等概念。<br><img src="https://gitee.com/oceanstack/image/raw/master/space/inner_product.jpg" alt="avatar">  </p>
+<h3 id="巴拿赫空间"><a href="#巴拿赫空间" class="headerlink" title="巴拿赫空间"></a>巴拿赫空间</h3><p>巴拿赫空间 Banach Space<br>赋范空间是巴拿赫于1922年提出的，而 <strong>完备的</strong> <strong>线性</strong> 赋范空间 称为巴拿赫空间。大多数巴拿赫空间是无穷维空间。   </p>
+<p>什么是完备性 (Completeness) 呢？<br>可以理解为对这个空间中的元素做某种操作，如乘法，得到的结果依然属于这个空间内。   </p>
+<h3 id="希尔伯特空间"><a href="#希尔伯特空间" class="headerlink" title="希尔伯特空间"></a>希尔伯特空间</h3><p>希尔伯特空间 Hilbert Space<br><strong>完备</strong> 的 <strong>无穷维</strong> 的内积空间就被称为希尔伯特空间。<br>它是希尔伯特于1904-1910年引入无穷实数组并定义积，再加上完备性引入的。   </p>
+<p>其上所有的柯西列等价于收敛列，至此微积分中的大部分概念都可以无障碍地推广到希尔伯特空间中。<br>同时也为基于任意正交系上的多项式表示的傅立叶级数和傅立叶变换提供了一种有效的表述方式，这又是泛函分析的核心概念之一。   </p>
+<p>再扯远点像神一般的天才的冯·诺依曼 (John von Neumann)  “现代计算机之父”、“博弈论之父”。<br>年轻时曾师从于希尔伯特，后来他通过希尔伯特空间这一数学工具用在物理学中发明了算子环理论 a theory of rings of operators , now known as “Von Neumann algebra” ，一举夯实了量子力学的地基。   </p>
+<h3 id="拓扑空间"><a href="#拓扑空间" class="headerlink" title="拓扑空间"></a>拓扑空间</h3><p>拓扑空间 Topological space<br>拓扑是“弱化”了的距离。<br>欧几里得几何学需要内积，但连续的概念不需要内积，甚至不需要距离 。<br>例如社交圈中不同的朋友分类是一个个圈，并没距离，再比如“连续”的学号。<br>不用距离而用开集可以把连续的概念拓展至离散的情况。<br>此时连续的定义是：<br>记 $ x_0 \in D \subset R $<br>$O(x_0,\delta) = \lbrace x;|x-x_0|&lt; \delta \rbrace $<br>$O(f(x_0), \varepsilon ) = \lbrace y;|y-f(x_0)|&lt; \varepsilon \rbrace $<br>则连续可定义为：<br>$\forall \varepsilon &gt; 0  ,  \exists \delta &gt; 0 $,<br>$f( O(x_0, \delta ) \cap D ) \subset O( f(x_0) , \varepsilon ) $   </p>
+<p>拓扑的定义：<br>设X是任意集合，$\tau \subset 2^X 若满足 : $<br>1、 $\tau$ 内任何一个集合的<strong>并</strong>仍属于 $\tau$<br>2、 $\tau$ 内任何一个集合的<strong>交</strong>仍属于 $\tau$<br>3、 X 和 空集仍属于 $\tau$<br>则称 $\tau$ 为X上的一个拓扑。<br>称$(X , \tau )$ 为拓扑空间 。<br>拓扑空间元素是X，规则 $\tau$ 就是上面定义的拓扑。<br><img src="https://gitee.com/oceanstack/image/raw/master/space/homeomorphism.jpg" alt="avatar">  </p>
+<h2 id="空间总结"><a href="#空间总结" class="headerlink" title="空间总结"></a>空间总结</h2><p>范数是可以定义强化了的距离。内积较距离和范数有更多的内涵，它更具体。<br>但是拓扑是弱化了的距离，拓扑是最弱的东西，它能够描述的对象就最广泛。<br>距离是这个地方的核心。<br>有了拓扑就有了拓扑空间。<br>有了距离就有了度量空间。<br>有了范数就有了赋范空间。<br>有了内积就有了内积空间。<br>内积空间已经有了线性结构，<br>如果把线性结构加上去，就是拓扑线性空间，线性度量空间，线性赋范空间和内积空间。<br>如果对线性赋范空间再加上完备性，就是巴拿赫空间。<br>内积空间还加上完备性，就是希尔伯特空间。   </p>
+<p>不同空间的关系可参考下图<br><img src="https://gitee.com/oceanstack/image/raw/master/space/spaces.jpg" alt="avatar">   </p>
+<p>研究无穷维内积空间和无穷维线性赋范空间映射的数学分支叫泛函分析。又分线性泛函和非线性泛函。<br>研究拓扑空间的数学分支叫拓扑学，又分点集拓扑，代数拓扑和微分拓扑。<br>泛函分析，拓扑学和抽象代数在习惯上称为新三高。     </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/edma_introduce/" rel="prev" title="EDMA 简介">
+                  <i class="fa fa-chevron-left"></i> EDMA 简介
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">etgo</span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  <script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              const target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    const script = document.createElement('script');
+    script.src = '//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-mml-chtml.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.typesetClear();
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+
+
+</body>
+</html>
