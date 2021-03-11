@@ -32,7 +32,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/float_pi/pi.jpg">
 <meta property="article:published_time" content="2021-03-10T13:30:00.000Z">
-<meta property="article:modified_time" content="2021-03-10T14:05:26.045Z">
+<meta property="article:modified_time" content="2021-03-11T13:39:00.329Z">
 <meta property="article:author" content="etgo">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/float_pi/pi.jpg">
@@ -161,7 +161,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E-pi"><span class="nav-number">1.</span> <span class="nav-text">浮点类型与$\pi$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E5%A5%87%E6%9C%89%E8%B6%A3%E7%9A%84-pi-%E4%B8%8E-e"><span class="nav-number">2.</span> <span class="nav-text">神奇有趣的 $\pi$ 与 e</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B%E4%B8%8E-pi"><span class="nav-number">1.</span> <span class="nav-text">浮点类型与 $\pi$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E5%A5%87%E6%9C%89%E8%B6%A3%E7%9A%84-pi"><span class="nav-number">2.</span> <span class="nav-text">神奇有趣的 $\pi$</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pi-%E4%B8%8E-e"><span class="nav-number">3.</span> <span class="nav-text">$\pi$ 与 e</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -285,9 +285,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="浮点类型与-pi"><a href="#浮点类型与-pi" class="headerlink" title="浮点类型与$\pi$"></a>浮点类型与$\pi$</h2><p>今天有位同事跟我说他发现代码中 $\pi$ 定义成 3.14159274f 。<br>他很好奇地找我请教这个数学库中 $\pi$ 的定义是不是搞错了？<br>$\pi$ = 3.141592<strong>65</strong><br>$\pi$ = 3.141592<strong>74</strong>f<br>这段是毫米波雷达聚类和追踪依赖的代码，其定义为 float 型。<br>首先他看的很仔细，一般不会注意到这一细节，值得肯定。<br>其实这与float型的存储方式与精度有关：<br>float型32位中只有24位尾数，实际上最后的“4”已经不再具有代表性。即便定义为 3.14159265 ，在float型32位存储中依然是3.14159274 。<br>参考下图：<br><img src="https://gitee.com/oceanstack/image/raw/master/float_pi/pi.jpg" alt="avatar">   </p>
-<p>关于float型存储更详细讲解可参考链接：<br>链接：<a target="_blank" rel="noopener" href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">https://www.h-schmidt.net/FloatConverter/IEEE754.html</a>   </p>
-<h2 id="神奇有趣的-pi-与-e"><a href="#神奇有趣的-pi-与-e" class="headerlink" title="神奇有趣的 $\pi$ 与 e"></a>神奇有趣的 $\pi$ 与 e</h2><p>$\pi$ 和 e ，一个代表旋转，一个代表增长。<br>$\pi$ 和 e 组合在一起成了史上最美的欧拉公式 Euler’s Identity ，被数学家评价为的“上帝公式”。<br>$e^{i\pi} + 1 = 0 $<br>以欧拉公式为基础，约瑟夫·傅里叶 Joseph Fourier 发明了改变人类对世界认知且对工程等领域产生了深远影响的傅里叶变换 Fourier Transform ：<br>$F(\omega) = \int_{-\infty}^{\infty} f(t) \mathrm{e}^{-\mathrm{j}\omega t} \mathrm{d}t $<br>$ \mathcal{F}(\delta(\omega)) = 1$   </p>
+        <h2 id="浮点类型与-pi"><a href="#浮点类型与-pi" class="headerlink" title="浮点类型与 $\pi$"></a>浮点类型与 $\pi$</h2><p>今天有位同事跟我说他发现代码中 $\pi$ 定义成 3.14159274f 。<br>他很好奇地找我请教这个数学库中 $\pi$ 的定义是不是搞错了？<br>$\pi$ = 3.141592<strong>65</strong><br>$\pi$ = 3.141592<strong>74</strong>f<br>这段是毫米波雷达聚类和追踪依赖的代码，其定义为 float 型。<br>首先他看的很仔细，一般不会注意到这一细节，值得肯定。<br>其实这与float型的存储方式与精度有关：<br>float型32位中只有24位尾数，实际上最后的“4”已经不再具有代表性。即便定义为 3.14159265 ，在float型32位存储中依然是3.14159274 。<br>参考下图：<br><img src="https://gitee.com/oceanstack/image/raw/master/float_pi/pi.jpg" alt="avatar">   </p>
+<p>关于float型存储更详细讲解可参考链接：<br><a target="_blank" rel="noopener" href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">https://www.h-schmidt.net/FloatConverter/IEEE754.html</a>   </p>
+<h2 id="神奇有趣的-pi"><a href="#神奇有趣的-pi" class="headerlink" title="神奇有趣的 $\pi$"></a>神奇有趣的 $\pi$</h2><p>$\pi$ 这个不三不四的数字，其内涵很丰富，很有意思。<br>在影视剧《疑犯追踪》中，“宅总”哈罗德·芬奇有这样一段话：<br>“圆周长与直径之比，无穷无尽，永不重复。<br>在这串数字中，包含每种可能的组合。你的生日、储物柜密码、社保号码，都在其中某处。<br>如果把这些数字转换为字母，就能得到所有的单词，无数种组合。你婴儿时发出的第一个音节，你心上人的名字，你一辈子从始至终的故事，我们做过或说过的每件事，宇宙中所有无限的可能，都在这个简单的圆中。”<br>如果在数学上他是在说 $\pi$ 是一个合取数，严格的讲是“极有可能”是一个合取数。<br>同时在 $\pi$ 当中含有的1,2,3,4,5,6,7,8,9,0几乎都是相等数量的，两位数10,11,12,…,99也几乎都相等，三位数，四位数都是如此。所以 $\pi$ 也“极有可能”是一个正规数。<br>感兴趣的可在以下链接中搜索下：<br><a target="_blank" rel="noopener" href="http://www.angio.net/pi/piquery">http://www.angio.net/pi/piquery</a>   </p>
+<p>关于 $\pi$ 你还听过哪些神奇有趣的事情吗 ？    </p>
+<h2 id="pi-与-e"><a href="#pi-与-e" class="headerlink" title="$\pi$ 与 e"></a>$\pi$ 与 e</h2><p>因为旋转，大量的公式里含有 $\pi$ ，同时因为增长大量的公式里含有 e 。<br>而把这两者组合在一起的成为史上最美的欧拉恒等式 Euler’s Identity ，被数学家评价为的“上帝公式”。<br>$e^{i\pi} + 1 = 0 $<br>以此为基础，约瑟夫·傅里叶 Joseph Fourier 发明了改变人类认知世界的方法且对工程等领域产生了深远影响的傅里叶变换 Fourier Transform ：<br>$F(\omega) = \int_{-\infty}^{\infty} f(t) \mathrm{e}^{-\mathrm{j}\omega t} \mathrm{d}t $<br>$ \mathcal{F}(\delta(\omega)) = 1$   </p>
+<p>最后推荐一首钢琴曲：What PI Sounds Like ，由加拿大作曲家Michael Blake创作的“数学歌曲”，他将圆周率的数字逐一“翻译”成音符作成此曲。    </p>
 
     </div>
 
