@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="本文是对CAN通信的数据链接层的介绍，基于BOSCH CAN Specification Version 2.0 和 ISO11898-1，所以不涉及到物理层的具体介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CAN2.0 和 ISO11898-1">
+<meta property="og:url" content="https://etgo.cc/can/index.html">
+<meta property="og:site_name" content="以太快跑">
+<meta property="og:description" content="本文是对CAN通信的数据链接层的介绍，基于BOSCH CAN Specification Version 2.0 和 ISO11898-1，所以不涉及到物理层的具体介绍。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/road.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/class_c.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/speed_.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/layer_can.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/data_frame.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/remote.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/error_frame.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/error_type.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/status.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/error_flow.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/overload_frame.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/interframe.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/sample_point.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/bit_timing.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/dlc.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/combining.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/can/bit_rate.jpg">
+<meta property="article:published_time" content="2017-02-25T11:30:00.000Z">
+<meta property="article:modified_time" content="2021-03-29T14:29:27.492Z">
+<meta property="article:author" content="etgo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/can/road.jpg">
+
+
+<link rel="canonical" href="https://etgo.cc/can/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>CAN2.0 和 ISO11898-1 | 以太快跑</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">以太快跑</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-me"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>me</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAN%E7%9A%84%E5%8F%91%E5%B1%95"><span class="nav-number">1.</span> <span class="nav-text">CAN的发展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CAN2-0-%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">CAN2.0 的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%A7%E6%A0%BC%E5%BC%8F%E4%B8%8E%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">帧格式与类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B8%A7"><span class="nav-number">3.1.</span> <span class="nav-text">数据帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%A5%E6%8E%A7%E5%B8%A7"><span class="nav-number">3.2.</span> <span class="nav-text">遥控帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%B8%A7"><span class="nav-number">3.3.</span> <span class="nav-text">错误帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E8%BD%BD%E5%B8%A7"><span class="nav-number">3.4.</span> <span class="nav-text">过载帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A7%E9%97%B4%E9%9A%94"><span class="nav-number">3.5.</span> <span class="nav-text">帧间隔</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E6%97%B6%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">位时序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CANFD"><span class="nav-number">5.</span> <span class="nav-text">CANFD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CANFD-%E4%B8%8E-CAN-2-0-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">5.1.</span> <span class="nav-text">CANFD 与 CAN 2.0 的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E9%80%9F%E7%8E%87%EF%BC%9A"><span class="nav-number">5.1.1.</span> <span class="nav-text">传输速率：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%95%BF%E5%BA%A6%EF%BC%9A"><span class="nav-number">5.1.2.</span> <span class="nav-text">数据长度：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%A7%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="nav-number">5.1.3.</span> <span class="nav-text">帧格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ID-%E9%95%BF%E5%BA%A6%EF%BC%9A"><span class="nav-number">5.1.4.</span> <span class="nav-text">ID 长度：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAN-%E5%92%8C-CANFD-%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98-%EF%BC%9A"><span class="nav-number">5.2.</span> <span class="nav-text">CAN 和 CANFD 兼容性问题 ：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ISO%E5%92%8C%E9%9D%9EISO%E7%9A%84CANFD"><span class="nav-number">5.3.</span> <span class="nav-text">ISO和非ISO的CANFD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8CAN-%E5%92%8C-CANFD-%E9%80%9F%E7%8E%87"><span class="nav-number">5.4.</span> <span class="nav-text">常用CAN 和 CANFD 速率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%BC%A9%E7%95%A5%E8%AF%8D"><span class="nav-number">6.</span> <span class="nav-text">一些缩略词</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/can/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="etgo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="以太快跑">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CAN2.0 和 ISO11898-1
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-02-25 19:30:00" itemprop="dateCreated datePublished" datetime="2017-02-25T19:30:00+08:00">2017-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B1%BD%E8%BD%A6%E7%94%B5%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">汽车电子</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">本文是对CAN通信的数据链接层的介绍，基于BOSCH CAN Specification Version 2.0 和 ISO11898-1，所以不涉及到物理层的具体介绍。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="CAN的发展"><a href="#CAN的发展" class="headerlink" title="CAN的发展"></a>CAN的发展</h2><p>   虽主要介绍数据链接层Data Link的内容，但先了解下CAN的发展，更有利于理解 ： </p>
+<ul>
+<li>1983年，Bosch开始研究汽车网络技术</li>
+<li>1986年，Bosch在SAE大会正式公布CAN协议</li>
+<li>1987年，Intel和Philips先后推出CAN控制器芯片</li>
+<li>1991年，Bosch颁布CAN2.0技术规范</li>
+<li>1991年，CAN总线最先在BenzS系列轿车上实现</li>
+<li>1993年，ISO颁布CAN国际标准ISO-11898</li>
+<li>1994年，由CiA组织举办第一届国际CAN大会(iCC)</li>
+<li>2005年，CiA在中国的第一场CAN研讨会 </li>
+<li>2012年，Bosch推出CANFD1.0 </li>
+<li><p>2015年，CANFD的ISO标准化  </p>
+<p><img src="https://gitee.com/oceanstack/image/raw/master/can/road.jpg" alt="avatar">  </p>
+<p>注意 CAN 是 BOSCH 公司的研究出来的标准，同时BOSCH CAN Specification Version 2.0 是在1991年出的，早于ISO标准，ISO-11898是1993年推出的。<br>其实对比 ISO-11898-1 会发现与 BOSCH CAN 2.0 几乎相同。所以之后介绍中如提到CAN 2.0的时候也可理解为同时也包含了ISO-11898-1。<br>另外BOSCH CAN 2.0 包括Part A 与 Part B 两部分，Part B的区别是除了讲标准帧格式standard message format 的同时又讲到了扩展帧格式extended message format 。<br>本文除主要介绍 CAN 2.0 ，也会涉及到简单介绍下 CANFD ，对于还有一下代的CANXL，其真正大规模使用估计要五到十年，所以在此先不作讨论。   </p>
+<p>根据通信速率，SAE定义了以下类别的汽车网络 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/can/class_c.jpg" alt="avatar"><br>对于ADAS领域至少于Class C。   </p>
+<p>它们的速率可形象表示如下 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/can/speed_.jpg" alt="avatar">  </p>
+<p>其在通信中所处的位置如下图红色标，<br>数据链接层是用来保证所传输的数据的准确性，它会把上一层收到的数据被分制成特定的可被物理层传输的帧。 其中的地址确定了帧将发送到何处，而纠错和控制信息则确保帧无差错到达。  </p>
+<p><img src="https://gitee.com/oceanstack/image/raw/master/can/layer_can.jpg" alt="avatar">  </p>
+</li>
+</ul>
+<h2 id="CAN2-0-的特点"><a href="#CAN2-0-的特点" class="headerlink" title="CAN2.0 的特点"></a>CAN2.0 的特点</h2><ul>
+<li>CAN节点设计成本较低，通信介质采用双绞线  </li>
+<li>通信速率小于5Kbps时 通信距离最远达10km，速率最高1Mb/s 时距离最长40m  </li>
+<li>物理信号与逻辑信号之间转换采用差分电平    </li>
+<li>采用短帧结构，有效字节数为8个, 权衡的策略可满足汽车实时响应要求   </li>
+<li>节点间采用多主通信方式，节点数实际可达110个  </li>
+<li>报文ID值越小，优先级越高，也是为满足汽车网络报文实时性要求     </li>
+<li>CAN编码采用NRC非零编码，相同带宽下信息量更大,因每个码元不用调制为两个不同的电平，可对比曼彻斯特编码     </li>
+<li>非破坏性总线仲裁处理机制  借助逐位仲裁帧中的ID号码可使信息和时间都没有损坏 </li>
+<li>报文帧仲裁失败或者传输期间被破坏有自动重发机制  </li>
+<li>节点在错误严重的情况下，会自动脱离总线，切断联系以不影响总线正常工作   </li>
+<li>具有 CRC 校验机制   </li>
+</ul>
+<h2 id="帧格式与类型"><a href="#帧格式与类型" class="headerlink" title="帧格式与类型"></a>帧格式与类型</h2><p>可分 5 种类型的帧<br>数据帧 (DATA FRAME) 用于发送单元向接收单元传送数据的帧。<br>遥控帧 (REMOTE FRAME) 用于接收单元向具有相同ID 的发送单元请求数据的帧。<br>错误帧 (ERROR FRAME) 用于当检测出错误时向其它单元通知错误的帧。<br>过载帧 (OVERLOAD FRAME) 用于接收单元通知其尚未做好接收准备的帧。<br>帧间隔 (INTERFRAME SPACE) 用于将数据帧及遥控帧与前面的帧分离开来的帧。 </p>
+<h3 id="数据帧"><a href="#数据帧" class="headerlink" title="数据帧"></a>数据帧</h3><p>数据帧由 7 个段构成：<br>(1) 帧起始(Start of Frame) 表示数据帧开始的段。<br>(2) 仲裁段(Arbitration Frame) 表示该帧优先级的段。<br>(3) 控制段(Control Frame) 表示数据的字节数及保留位的段。<br>(4) 数据段(Data Frame) 数据的内容，可发送 0～8 个字节的数据。<br>(5) CRC 段(CRC Frame) 检查帧的传输错误的段。<br>(6) ACK 段(Ack Frame) 表示确认正常接收的段。<br>(7) 帧结束(End of Frame) 表示数据帧结束的段。   </p>
+<p><img src="https://gitee.com/oceanstack/image/raw/master/can/data_frame.jpg" alt="avatar">  </p>
+<h3 id="遥控帧"><a href="#遥控帧" class="headerlink" title="遥控帧"></a>遥控帧</h3><p>遥控帧是接收单元向发送单元请求发送数据所用的帧。<br>对比数据帧可发现遥控帧没有数据段 ：    </p>
+<p><img src="https://gitee.com/oceanstack/image/raw/master/can/remote.jpg" alt="avatar">   </p>
+<p>另外其中DLC代表请求的数据长度。<br>遥控帧在实际开发中很少使用，并且不推荐使用。    </p>
+<h3 id="错误帧"><a href="#错误帧" class="headerlink" title="错误帧"></a>错误帧</h3><p>用于在接收和发送消息时检测出错误通知错误的帧。<br>错误帧由错误标志和错误界定符构成：<br><img src="https://gitee.com/oceanstack/image/raw/master/can/error_frame.jpg" alt="avatar"><br>(1) 错误标志<br>错误标志包括主动错误标志和被动错误标志两种。<br>主动错误标志：6 个位的显性位。<br>被动错误标志：6 个位的隐性位。<br>(2) 错误界定符<br>错误界定符由 8 个位的隐性位构成。<br>错误的种类<br><img src="https://gitee.com/oceanstack/image/raw/master/can/error_type.jpg" alt="avatar">     </p>
+<p>错误状态<br>看下图3种状态之间的转换条件， 单元始终处于 3 种状态之一。<br><img src="https://gitee.com/oceanstack/image/raw/master/can/status.jpg" alt="avatar">  </p>
+<p>(1) 主动错误状态<br>主动错误状态是可以正常参加总线通信的状态。<br>处于主动错误状态的单元检测出错误时，输出主动错误标志。<br>(2) 被动错误状态<br>被动错误状态是易引起错误的状态。<br>处于被动错误状态的单元虽能参加总线通信，但为不妨碍其它单元通信，接收时不能积极地发送错误通知。<br>处于被动错误状态的单元就算检测出错误，而其它处于主动错误状态的单元如果没发现错误，整个总线也被认为是没有错误的。  处于被动错误状态的单元检测出错误时，输出被动错误标志。<br>另外，处于被动错误状态的单元在发送结束后不能马上再次开始发送。<br>在开始下次发送前，在间隔帧期间内必须插入“延迟传送”(8 个位的隐性位)。<br>(3) 总线关闭态<br>总线关闭态是不能参加总线上通信的状态。<br>信息的接收和发送均被禁止。<br>这些状态依靠发送错误计数和接收错误计数来管理，根据计数值决定进入何种状态。   </p>
+<p>关于CAN的错误处理流程可参考虹科云课堂的下图：<br><img src="https://gitee.com/oceanstack/image/raw/master/can/error_flow.jpg" alt="avatar">    </p>
+<h3 id="过载帧"><a href="#过载帧" class="headerlink" title="过载帧"></a>过载帧</h3><p>过载帧是用于接收单元通知其尚未完成接收准备的帧。过载帧由过载标志和过载界定符构成：<br><img src="https://gitee.com/oceanstack/image/raw/master/can/overload_frame.jpg" alt="avatar"><br>(1) 过载标志<br>6 个位的显性位。<br>过载标志的构成与主动错误标志的构成相同。<br>(2) 过载界定符<br>8 个位的隐性位。<br>过载界定符的构成与错误界定符的构成相同。   </p>
+<h3 id="帧间隔"><a href="#帧间隔" class="headerlink" title="帧间隔"></a>帧间隔</h3><p>帧间隔是用于分隔数据帧和遥控帧的帧。数据帧和遥控帧可通过插入帧间隔将本帧与前面的任何帧（数据帧、遥控帧、错误帧、过载帧）分开。<br>错误帧和过载帧前不能插入帧间隔。<br><img src="https://gitee.com/oceanstack/image/raw/master/can/interframe.jpg" alt="avatar"><br>(1) 间隔<br>3 个位的隐性位。<br>(2) 总线空闲<br>隐性电平，无长度限制（0 亦可）。<br>本状态下，可视为总线空闲，要发送的单元可开始访问总线。<br>(3) 延迟传送（发送暂时停止）<br>8 个位的隐性位。<br>只在处于被动错误状态的单元刚发送一个消息后的帧间隔中包含的段。   </p>
+<h2 id="位时序"><a href="#位时序" class="headerlink" title="位时序"></a>位时序</h2><p>位时序也是一个很重要的概念，在CAN驱动开发中关于波特率的设置就与这个有关。<br>它把CAN数据的每一个bit又细分为4段，为了提高容错率 Tolerance range of the oscillator frequencies 。<br><img src="https://gitee.com/oceanstack/image/raw/master/can/sample_point.jpg" alt="avatar">   </p>
+<p>其最小单位 tq time quantum<br><img src="https://gitee.com/oceanstack/image/raw/master/can/bit_timing.jpg" alt="avatar"><br>波特率和它们的关系如下：<br>BaudRate = CAN_CLK / ((( Prop_Seg + Phase_Seg1 + Phase_Seg2) + Sjw ) * (BRP))<br>其中<br>Synchronization Segment (Sync_Seg)<br>Propagation Time Segment (Prop_Seg)<br>Phase Buffer Segment 1 (Phase_Seg1)<br>Phase Buffer Segment 2 (Phase_Seg2)<br>Synchronization Jump Width (SJW)<br>Baud Rate Prescaler (BRP)<br>另外<br>tq = Baud Rate Prescaler / CAN_CLK     </p>
+<h2 id="CANFD"><a href="#CANFD" class="headerlink" title="CANFD"></a>CANFD</h2><h3 id="CANFD-与-CAN-2-0-的区别"><a href="#CANFD-与-CAN-2-0-的区别" class="headerlink" title="CANFD 与 CAN 2.0 的区别"></a>CANFD 与 CAN 2.0 的区别</h3><p>CAN FD (flexible data-rate)   </p>
+<p>一些基本介绍可参考：<br><a target="_blank" rel="noopener" href="https://www.can-cia.org/can-knowledge/can/can-fd/">https://www.can-cia.org/can-knowledge/can/can-fd/</a>    </p>
+<p>CANFD 可以理解成CAN协议的升级版，只升级了协议，物理层未改变。<br>CAN 与 CANFD 主要区别：传输速率不同、数据长度不同、帧格式不同、ID长度不同。    </p>
+<h4 id="传输速率："><a href="#传输速率：" class="headerlink" title="传输速率："></a>传输速率：</h4><p>CAN：最大传输速率1Mbps。<br>CANFD：速率可变，仲裁比特率最高1Mbps（与CAN相同），数据比特率最高10Mbps   </p>
+<h4 id="数据长度："><a href="#数据长度：" class="headerlink" title="数据长度："></a>数据长度：</h4><p>CAN：一帧数据最长8字节<br>CANFD：一帧数据最长64字节  </p>
+<h4 id="帧格式："><a href="#帧格式：" class="headerlink" title="帧格式："></a>帧格式：</h4><p>CANFD 新增了FDF、BRS、ESI位。<br>FDF：表示CAN 报文还是CANFD 报文。<br>BRS：表示位速率转换，该位隐性时，速率可变（即BSR到CRC使用转换速率传输），该位为显性时，以正常的CAN-FD总线速率传输（恒定速率）；<br>ESI:表示发送节点状态  </p>
+<p>与CAN 一样，CANFD 一共具有，帧起始SOF，仲裁段，控制段，数据域，CRC域，ACK域，帧结束，共七个部分组成。<br>同时CANFD 不支持远程帧。    </p>
+<h4 id="ID-长度："><a href="#ID-长度：" class="headerlink" title="ID 长度："></a>ID 长度：</h4><p>CAN： 标准帧ID长度最长11bit<br>CANFD： 标准帧ID长度可扩展到12bit   </p>
+<p>同时注意CANFD数据长度在超过 8 Bytes 时 DLC的表示是跳变的，参考如下 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/can/dlc.jpg" alt="avatar"><br>d = dominant 显性的 1 , r = recessive 隐性的 0   </p>
+<h3 id="CAN-和-CANFD-兼容性问题-："><a href="#CAN-和-CANFD-兼容性问题-：" class="headerlink" title="CAN 和 CANFD 兼容性问题 ："></a>CAN 和 CANFD 兼容性问题 ：</h3><p>共存网络中，如何解决通讯速率和数据长度不同的冲突?<br>解决思路<br>1、传统CAN节点以1Mbit/s传输数据到 CAN FD:<br>直接通过(CAN FD向下兼容)<br>2 CANFD设备以8Mbit/s传输数据到传统CAN:<br>采用CANFD路由器:先将传统CANFD的速率自动降为1Mbit/s再转出去。<br>3 传统CAN节点向CANFD节点传输8字节的数据:<br>直接通过(CAN FD向下兼容)<br>4 CANFD节点向传统CAN节点传输64字节的数据:<br>采用可编程CANFD路由器:预先编程并下载到路由器，CANFD的数据通过路由器后可以按照预先设置的程序将数据做拆包等处理再转成8字节转发出去给传统CAN设备。<br><img src="https://gitee.com/oceanstack/image/raw/master/can/combining.jpg" alt="avatar">    </p>
+<h3 id="ISO和非ISO的CANFD"><a href="#ISO和非ISO的CANFD" class="headerlink" title="ISO和非ISO的CANFD"></a>ISO和非ISO的CANFD</h3><p>记住2012年，Bosch推出CANFD1.0 和 2015年，CANFD的ISO标准化这两个时间点很重要，因为ISO标准的CANFD与之前Bosch推出的CANFD稍有不同，所以2015年之前推出的CANFD设备大概率是非标准的CANFD。<br>它们的主要区别：<br>ISO CANFD 引入了一个 3 bit 的填充位计数器以及额外的校验位，另外 CRC 计算值也不相同，所以不兼容，使用的时候要注意区分一下。      </p>
+<h3 id="常用CAN-和-CANFD-速率"><a href="#常用CAN-和-CANFD-速率" class="headerlink" title="常用CAN 和 CANFD 速率"></a>常用CAN 和 CANFD 速率</h3><p><img src="https://gitee.com/oceanstack/image/raw/master/can/bit_rate.jpg" alt="avatar"><br>记住Frame Duration 对CAN总线的软件设计通信评估很有帮助。   </p>
+<h2 id="一些缩略词"><a href="#一些缩略词" class="headerlink" title="一些缩略词"></a>一些缩略词</h2><p>Abbreviations<br>NRZ non-return-to-zero<br>PCI protocol control information<br>PDU protocol data unit<br>SDU service data unit<br>SOF start of frame<br>TEC transmit error counter<br>TTC time triggered communication<br>REC receive error counter<br>CAN Controller area network<br>LLC logical link control<br>MAC medium access control<br>MSB most significant bit<br>LSB least significant bit<br>EOF end of frame<br>CiA CAN in Automation 组织 <a target="_blank" rel="noopener" href="https://www.can-cia.org/">https://www.can-cia.org/</a>   </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/Hanzi/" rel="prev" title="《通用规范汉字表》">
+                  <i class="fa fa-chevron-left"></i> 《通用规范汉字表》
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/iso14229/" rel="next" title="ISO14229-1 诊断">
+                  ISO14229-1 诊断 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">etgo</span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+
+</body>
+</html>
