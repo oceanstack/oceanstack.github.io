@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="本文是对ISO115765-2 Transport protocol and network layer services  传输层协议和网络层服务标准的讲解，它主要是数据链接层和应用层之间的的桥梁，可以把应用层的数据包分成更小的包使CAN数据链路层得以支持，其也有充当路由的功能（这一部分主要还是通过CANID实现）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ISO 15765-2 网络和传输层">
+<meta property="og:url" content="https://etgo.cc/iso15765/index.html">
+<meta property="og:site_name" content="以太快跑">
+<meta property="og:description" content="本文是对ISO115765-2 Transport protocol and network layer services  传输层协议和网络层服务标准的讲解，它主要是数据链接层和应用层之间的的桥梁，可以把应用层的数据包分成更小的包使CAN数据链路层得以支持，其也有充当路由的功能（这一部分主要还是通过CANID实现）。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/layer.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/n_tatype.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/signal.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/dl8.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/dlex8.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/multi.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/fs.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/pdu.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/stiming.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/mtiming.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/flow.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/s_example.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/m_example.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/identifier.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/padding_8.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/padding_e8.jpg">
+<meta property="article:published_time" content="2017-03-18T11:30:00.000Z">
+<meta property="article:modified_time" content="2021-04-10T09:50:34.286Z">
+<meta property="article:author" content="etgo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/iso15765/layer.jpg">
+
+
+<link rel="canonical" href="https://etgo.cc/iso15765/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>ISO 15765-2 网络和传输层 | 以太快跑</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">以太快跑</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-me"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>me</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E8%AF%86-ISO-15765-%E6%A0%87%E5%87%86"><span class="nav-number">1.</span> <span class="nav-text">初识 ISO 15765 标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">网络层服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E6%9C%8D%E5%8A%A1%E5%8E%9F%E8%AF%AD"><span class="nav-number">2.1.</span> <span class="nav-text">网络层服务原语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E6%9C%8D%E5%8A%A1%E5%88%86%E7%B1%BB"><span class="nav-number">2.2.</span> <span class="nav-text">网络层服务分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E4%BF%A1%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">1 通信服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8D%8F%E8%AE%AE%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.4.</span> <span class="nav-text">2 协议参数设置服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E6%9C%8D%E5%8A%A1%E5%85%B7%E4%BD%93"><span class="nav-number">2.5.</span> <span class="nav-text">网络层服务具体</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%B1%82%E5%8D%8F%E8%AE%AE"><span class="nav-number">3.</span> <span class="nav-text">传输层协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SingleFrame"><span class="nav-number">3.1.</span> <span class="nav-text">SingleFrame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multiple-frame"><span class="nav-number">3.2.</span> <span class="nav-text">Multiple-frame</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-PDU"><span class="nav-number">3.3.</span> <span class="nav-text">N_PDU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#State-flow"><span class="nav-number">3.4.</span> <span class="nav-text">State flow</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">两个实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%8A%E6%96%AD%E6%A0%87%E5%87%86%E7%9A%84%E4%B8%B2%E8%81%94"><span class="nav-number">5.</span> <span class="nav-text">诊断标准的串联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%BC%A9%E7%95%A5%E8%AF%8D"><span class="nav-number">6.</span> <span class="nav-text">一些缩略词</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/iso15765/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="etgo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="以太快跑">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ISO 15765-2 网络和传输层
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2017-03-18 19:30:00" itemprop="dateCreated datePublished" datetime="2017-03-18T19:30:00+08:00">2017-03-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B1%BD%E8%BD%A6%E7%94%B5%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">汽车电子</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+            <div class="post-description">本文是对ISO115765-2 Transport protocol and network layer services  传输层协议和网络层服务标准的讲解，它主要是数据链接层和应用层之间的的桥梁，可以把应用层的数据包分成更小的包使CAN数据链路层得以支持，其也有充当路由的功能（这一部分主要还是通过CANID实现）。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="初识-ISO-15765-标准"><a href="#初识-ISO-15765-标准" class="headerlink" title="初识 ISO 15765 标准"></a>初识 ISO 15765 标准</h2><p>ISO 15765 共有四部分文档，其统称是基于CAN的车辆诊断通信，<br>under the general title Road vehicles — Diagnostic communication over Controller Area Network (DoCAN):  </p>
+<ul>
+<li>Part 1 : General information and use case definition   </li>
+<li>Part 2 : Transport protocol and network layer services   </li>
+<li>Part 3 : Implementation of unified diagnostic services (UDS on CAN)   </li>
+<li>Part 4 : Requirements for emissions-related systems<br>本文主要介绍 Part 2， 它在 ISO-11898-1数据链接层之上，又在ISO14229-1之下，属于传输和网络层 Transport protocol and network layer services ，它主要作用是可以把应用层的数据包分成更小的包以使CAN数据链路层得以支持，其也有充当路由的功能（这一部分主要还是通过CANID实现）。<br>比如ISO 14229-1 中的各服务消息的传递，如果超过8个字节，则要通过ISO 115765-2 进行分包成多个 8 字节的信息，然后ISO 11898-1 才能够进行打包处理，因为它在CAN 2.0 中每帧数据长度最大是 8 字节。<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/layer.jpg" alt="avatar">   </li>
+</ul>
+<p>关于这个标准的ISO文档我看过 2004版（第一版）和 2016版（第三版），本文主要基于 2016 版介绍。  </p>
+<p>2004版和2016版文档标题对比：<br>2004 ：Road vehicles — Diagnostics on Controller Area Networks (CAN) — Part 2: Network layer services<br>2016 ：Road vehicles — Diagnostic <strong>communication over Controller Area Network (DoCAN)</strong> — Part 2: <strong>Transport protocol and</strong> network layer services   </p>
+<h2 id="网络层服务"><a href="#网络层服务" class="headerlink" title="网络层服务"></a>网络层服务</h2><p><strong>Network layer services</strong>   </p>
+<h3 id="网络层服务原语"><a href="#网络层服务原语" class="headerlink" title="网络层服务原语"></a>网络层服务原语</h3><p>所有的网络层服务都具有相同的总体结构。要定义服务，有三种类型服务原语（primitive）      </p>
+<ul>
+<li>a service <strong>request primitive</strong>:<br>服务请求原语<br>用于更高的通信层或应用程序传递需要传输到网络层的控制信息和数据<br>used by higher communication layers or the application to pass control information and data required to be transmitted to the network layer    </li>
+<li>a service <strong>indication primitive</strong>:<br>服务指示原语<br>网络层用来将状态信息和接收到的数据传递给上层通信层或应用程序<br>used by the network layer to pass status information and received data to upper communication layers or the application</li>
+<li>a service <strong>confirmation primitive</strong>:<br>网络层用来将状态信息传递给更高的通信层或应用程序<br>used by the network layer to pass status information to higher communication layers or the application   </li>
+</ul>
+<p>indication “指示” 和 confirmation “确认” 的区别个人理解是indication用来向上层传递数据用，可有数据也可没有。confirmation 则是应答上层以表示某服务请求的执行状态，不会带有数据，只有状态信息。      </p>
+<p>所有网络层服务都有相同的通用格式:        </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">service_name.type ( </span><br><span class="line">    parameter A,</span><br><span class="line">    parameter B</span><br><span class="line">    [,parameter C, ...])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>service_name 例如 N_USData<br>type 是服务原语的类型<br>“parameter A, parameter B [,parameter C, …]”  是作为服务原语传递的值列表的N_SDU。     </p>
+<h3 id="网络层服务分类"><a href="#网络层服务分类" class="headerlink" title="网络层服务分类"></a>网络层服务分类</h3><p>这一部分是概要性的，是未确定的网络层通信协议，（ unconfirmed network layer communication protocol for the exchange of data between network nodes） 。<br>这里定义了两类服务：  </p>
+<h3 id="1-通信服务"><a href="#1-通信服务" class="headerlink" title="1 通信服务"></a>1 通信服务</h3><p><strong>Communication services</strong><br>这个服务最多可支持一次 4 294 967 295 bytes 的数据，即 4 字节 32 bits 的无符号整型的长度。<br>包括：<br><strong>N_USData.request</strong><br>请求服务，在必要时网络层要对数据进行拆分（ segments the data）。<br><strong>N_USData_FF.indication</strong><br>用于告知上层这是分段消息的起始段（used to signal the beginning of a segmented message reception to the upper layer）。<br><strong>N_USData.indication</strong><br>提供接收的数据给上层（used to provide received data to the higher layers）。<br><strong>N_USData.confirm</strong><br>确认应答给上层，表示请求服务项已经被执行（成功执行或不成功执行）。（confirms to the higher layers that the requested service has been carried out (successfully or not)）。   </p>
+<h3 id="2-协议参数设置服务"><a href="#2-协议参数设置服务" class="headerlink" title="2 协议参数设置服务"></a>2 协议参数设置服务</h3><p><strong>Protocol parameter setting services</strong><br>它支持动态设置协议的参数（dynamic setting of protocol parameters）。<br>包括：<br><strong>N_ChangeParameter.request</strong><br>用于请求动态设置特定的内部参数（used to request the dynamic setting of specific internal parameters）。<br><strong>N_ChangeParameter.confirm</strong><br>确认应答给上层，表示用于请求动态设置特定的内部参数已完成（成功或失败）。（confirms to the upper layer that the request to change a specific protocol has completed (successfully or not)）。<br><strong>内部操作 Internal operation</strong>  提供了分包方法，流控传输和重组。<br>（provides methods for segmentation, transmission with FlowControl, and reassembly）。   </p>
+<h3 id="网络层服务具体"><a href="#网络层服务具体" class="headerlink" title="网络层服务具体"></a>网络层服务具体</h3><p>关于网络层服务具体的格式和作用介绍参考ISO 15765 -2 2016 8.2 和 8.3 节 ， 它可理解为是对通信服务和协议参数设置服务更具体的介绍。<br>通过其 N_TAtype （8.3.2.4 N_TAtype, Network target address type）可以看出它支持CAN和CANFD ，当然这个在 2004版中是不会有体现的，因为CANFD是2012年推荐并且在2015年才被ISO化的。<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/n_tatype.jpg" alt="avatar"><br>另外注意 ：<br>在 ISO 15765 -2 2004 版中 5.3.3 <Length> 是 12 bits 支持范围 1-4095<br>而 ISO 15765 -2 2016 版中 8.3.3 <Length> 是 32 bits 支持范围 0000 0001 - FFFF FFFF （HEX表示）   </p>
+<h2 id="传输层协议"><a href="#传输层协议" class="headerlink" title="传输层协议"></a>传输层协议</h2><p><strong>Transport layer protocol</strong><br>N_PDU 的格式包括   N_AI + N_PCI + N_Data 稍后再作解释 。<br>传输帧分为SingleFrame 和 Multiple-frame   </p>
+<h3 id="SingleFrame"><a href="#SingleFrame" class="headerlink" title="SingleFrame"></a>SingleFrame</h3><p><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/signal.jpg" alt="avatar"><br>当要传输的数据可以在一帧内装载完，则不去要分段，此时就会用到SingleFrame方式。<br>如果传输送的数据长度等于 8 bytes，则有1或2 bytes 是用来作DL，另外7 或 6 bytes 是用来装载数据用 N_PDU。DL 占2 bytes 是考虑到扩展或混合地址 extended or mixed addressing。<br>如果是CANFD帧传输时 DL 就会占用 2 或 3 bytes 。<br>Definition of SF_DL values (CAN_DL ≤ 8)  :<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/dl8.jpg" alt="avatar"> </p>
+<p>Definition of SF_DL values (CAN_DL &gt; 8) :<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/dlex8.jpg" alt="avatar"> </p>
+<h3 id="Multiple-frame"><a href="#Multiple-frame" class="headerlink" title="Multiple-frame"></a>Multiple-frame</h3><p>当要传输的数据在一帧内无法装载完，则就需要分段，就要用到流控组合帧<br>由图可以看出包括 FirstFrame，ConsecutiveFrame，FlowControl<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/multi.jpg" alt="avatar"><br><strong>FirstFrame</strong><br>是多帧的第一帧，代表着开始，包含有多帧数据长度的信息。<br><strong>ConsecutiveFrame</strong><br>连续帧紧跟第一帧之后，把数据拆分成一帧帧，包含有帧序列，以方便接收后的组包。<br><strong>FlowControl</strong><br>流控帧包含一些控制信息：<br>FS FlowStatus 用以指示发送网络实体是否可以继续消息传输。<br>它的值和意义如下图：<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/fs.jpg" alt="avatar"><br>BS BlockSize  接收方允许发送方发送的 N_PDUs 的最大数目（在等待授权继续发送下一个 N_PDUs 之前）。当接收方将BS设置为 0 时，发送方不会等待授权继续发送。<br>STmin SeparationTime minimum  ： 发送方在两个CF N_PDUs之间的最小等待时间。   </p>
+<h3 id="N-PDU"><a href="#N-PDU" class="headerlink" title="N_PDU"></a>N_PDU</h3><p>PDU 是Protocol data unit的缩写，它得以保证一个节点的网络层和一个或多个其他节点(对等协议实体)的网络层之间传输数据。<br>格式format共包括三个部分：<br>Address information<br>Protocol control information<br>Data field<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/pdu.jpg" alt="avatar"><br>PCI 在上一节有介绍，它定义了几种不同帧类型。     </p>
+<h3 id="State-flow"><a href="#State-flow" class="headerlink" title="State flow"></a>State flow</h3><p>时序和Timing parameters可参考以下两图：<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/stiming.jpg" alt="avatar"><br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/mtiming.jpg" alt="avatar"><br>进一步细节可参考 9.8.1 Timing parameters</p>
+<p>数据接收的处理流程参考下图：<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/flow.jpg" alt="avatar"><br>进一步细节可参考 9.5.3 Verifying the correctness of received CAN frames    </p>
+<h2 id="两个实例"><a href="#两个实例" class="headerlink" title="两个实例"></a>两个实例</h2><ul>
+<li><p> SingleFrame<br>如果要传输三个Bytes “ISO” ，只需要用单帧，如下：<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/s_example.jpg" alt="avatar">    </p>
+</li>
+<li><p>Multiple-frame<br>如果要传输24个Bytes 数据 “ISO Transport ProtocolMC” ，那就要用到多帧组包了，如下：<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/m_example.jpg" alt="avatar">    </p>
+<h2 id="诊断标准的串联"><a href="#诊断标准的串联" class="headerlink" title="诊断标准的串联"></a>诊断标准的串联</h2><p>至此，结合之前的两篇文章关于CAN应用层至数据链接层，关于诊断和消息传输系列文章。<br>ISO14229 ISO15765 ISO11898 它们之间是什么关系呢，数据的格式如何串起来呢？<br>首先数据都是通过 ISO11898 数据链路层之后传递至硬件层，然后传递至总线上，被其它节点接收到。<br>ISO15765 传输和网络服务层是起到承上启下，拆包拼包的作用。因为比如 CAN2.0 一帧只能传输送 8 Bytes 的数据，而应用层 如 ISO14229 诊断（当然不仅仅是诊断）一帧的数据可能远超过 8 Bytes，那就需要ISO15765来处理。<br>其不管数据多长，最终在数据链路层都是一帧 8 Bytes的数据传输出去 （CANFD不同）。<br>同时源地址和目的地址的信息是包含在仲裁段 CAN ID (Identifier) 中的。<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/identifier.jpg" alt="avatar"> </p>
+</li>
+</ul>
+<p>再举例可参考 10.4 CAN frame data length code (DLC)   ：<br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/padding_8.jpg" alt="avatar"><br><img src="https://gitee.com/oceanstack/image/raw/master/iso15765/padding_e8.jpg" alt="avatar"> </p>
+<h2 id="一些缩略词"><a href="#一些缩略词" class="headerlink" title="一些缩略词"></a>一些缩略词</h2><p>Abbreviations     </p>
+<ul>
+<li>PDU ：Protocol Data Units  </li>
+<li>PCI ：Protocol control information  </li>
+<li>AI : Address Information   </li>
+<li>SA ：Source Address</li>
+<li>TA ：Target Address </li>
+<li>AE ：Address Extension</li>
+<li>DL ： Data length   </li>
+<li>SF ：SingleFrame  </li>
+<li>FF ：FirstFrame</li>
+<li>CF ：ConsecutiveFrame</li>
+<li>FC ：FlowControl</li>
+<li>FS ：FlowControl </li>
+<li>BS ： BlockSize  </li>
+<li>SN ：SequenceNumber </li>
+<li>DLC ：Data length code   </li>
+<li>CTS ： ContinueToSend </li>
+<li>OVFLW ： Overflow  </li>
+<li>STmin ：SeparationTime minimum  </li>
+</ul>
+<p>更多可参考 3.2 Abbreviated terms     </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/iso14229/" rel="prev" title="ISO14229-1 诊断">
+                  <i class="fa fa-chevron-left"></i> ISO14229-1 诊断
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/freetalk_cdago/" rel="next" title="三句半--CDA GO">
+                  三句半--CDA GO <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">etgo</span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+
+</body>
+</html>
