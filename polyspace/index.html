@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="本文简单介绍代码静态分析和形式化验证的概念，为什么需要这些，然后介绍下Polyspace的作用和使用方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Polyspace的代码静态分析和形式化方法">
+<meta property="og:url" content="https://etgo.cc/polyspace/index.html">
+<meta property="og:site_name" content="以太快跑">
+<meta property="og:description" content="本文简单介绍代码静态分析和形式化验证的概念，为什么需要这些，然后介绍下Polyspace的作用和使用方法。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/methods.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/vs.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/tools.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/results.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/default.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/server.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/access.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/brows.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/compile.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/tmt.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/spec.jpg">
+<meta property="article:published_time" content="2021-04-08T13:30:00.000Z">
+<meta property="article:modified_time" content="2021-04-27T13:40:08.839Z">
+<meta property="article:author" content="etgo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/polyspace/methods.jpg">
+
+
+<link rel="canonical" href="https://etgo.cc/polyspace/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>基于Polyspace的代码静态分析和形式化方法 | 以太快跑</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">以太快跑</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-me"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>me</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">什么静态分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E5%BD%A2%E5%BC%8F%E5%8C%96%E9%AA%8C%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">什么形式化验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%BF%99%E6%A0%B7%E5%81%9A"><span class="nav-number">3.</span> <span class="nav-text">为什么要这样做</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polyspace-%E7%AE%80%E4%BB%8B"><span class="nav-number">4.</span> <span class="nav-text">Polyspace 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polyspace-%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">Polyspace 使用</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/polyspace/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="etgo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="以太快跑">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于Polyspace的代码静态分析和形式化方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-08 21:30:00" itemprop="dateCreated datePublished" datetime="2021-04-08T21:30:00+08:00">2021-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B1%BD%E8%BD%A6%E7%94%B5%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">汽车电子</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文简单介绍代码静态分析和形式化验证的概念，为什么需要这些，然后介绍下Polyspace的作用和使用方法。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="什么静态分析"><a href="#什么静态分析" class="headerlink" title="什么静态分析"></a>什么静态分析</h2><p>静态分析方法通过直接扫描程序代码，提取程序关键语法并分析其语义，根据预先设定好的安全规则、漏洞特征检测潜在的漏洞。<br>或者对源程序进行一定抽象后再语义建模，然后在该模型上运行各种分析算法以验证程序的某种性质。</p>
+<p>动态测试的基本思想是：<br>实际的运行程序然后观测它的行为。检查程序运行结果和我们预期结果的差异，并对程序的健壮性运行效率等进行分析。   </p>
+<p>这种测试方法基本包含三个步骤：<br>编写测试用例、<br>根据测试用例运行程序、<br>检查程序的运行结果。   </p>
+<p>根据测试对象的不同可以分为黑盒和白盒测试。<br>黑盒测试：黑盒测试可以称为数据驱动测试。<br>白盒测试：白盒测试可以称为结构测试 。   </p>
+<p>静态分析只是意味着”阅读源代码并可能抱怨””动态分析”相反，意思是”运行程序并可能抱怨某些执行行为”   </p>
+<h2 id="什么形式化验证"><a href="#什么形式化验证" class="headerlink" title="什么形式化验证"></a>什么形式化验证</h2><p>形式化验证 Formal Verification<br>是指根据某个或某些形式化规范或属性，使用数学的方法证明其正确性或非正确性。   </p>
+<p>形式验证常见的有两种形式：<br>一种是推理“系统模型规约是否满足其性质规约”，这时，模型规约偏向操作型，性质往往是说明型的;<br>另一种是推理“系统的一个模型规约是否与另一模型规约有精化或等价关系”。<br>这些推理过程给出了一套静态方法来预测系统的行为:<br>用户可以描述系统行为的所期望性质或者开发过程中不同抽象之间关系的猜想，形式验证通过机械化的方式来证实或者证伪这个性质或者猜想，从而提高用户对规约和系统的可信程度。   </p>
+<p>形式验证包括4种技术与方法:   </p>
+<ul>
+<li>演绎推理  </li>
+<li>抽象解释   </li>
+<li>模型检测   </li>
+<li>符号执行   </li>
+</ul>
+<p>形式化方法 Formal Method<br>利用数学建模技术开展系统规范说明、规范分析和证明、转换开发和程序验证等活动。<br>用于构造、开发和推理一个系统行为的数学模型的描述性符号系统和分析方法。<br>Descriptive notations and analytical methods used to construct, develop and reason about mathematical models of system behavior    </p>
+<p>形式化方法最显著的作用是能够对形式规约进行验证。<br>形式化方法的验证手段的最重要优势是完备性，即能从数学逻辑上完全证明系统设计的正确性。<br>形式化方法是基于严格数学基础，对计算机硬件和软件系统进行描述、开发和验证的技术。<br>其数学基础建立在形式语言、语义和推理证明三位一体的形式逻辑系统之上。</p>
+<p>形式化方法 = 形式化模型 + 形式化分析。   </p>
+<p>形式化语言 用精确的数学或机器可处理的公式定义的语言，可用于构建形式化模型。    </p>
+<p>形式化方法是一个基础性和交叉性很强的研究方向 ，同时它是计算机科学的一个传统方向，迄今为止，共约有16位学者因为或者部分因为形式化方法的研究工作而获得图灵奖。<br>但了解这方面知识的计算机和软件从业者不会很多 ，另外因为深广我们也很难有精力去深入研究 ，只需了解其基本概念即可。    </p>
+<p>下面作下简单对比介绍 ：<br>从20世纪80年代开始，静态分析在词法／tg法分析、控制流分析、数据流分析、类型理论、定理证明、模型检验、抽象解释等方法的支持下，取得了软件缺陷检测能力方面的显著进展<br>但从代码安全缺陷检测的角度看，这些分析方法存在各自的缺点．如：  </p>
+<p><strong>基于词法和语法的检测方法</strong><br>虚报率高，并且很难检测到流敏感相关的安全性缺陷 </p>
+<p><strong>数据流分析技术</strong><br>扩展了检测类型，但对时序安全相关的安全性缺陷漏报率高，同时解决不了整体上虚报率高的问题</p>
+<p><strong>控制流分析技术</strong><br>解决了时序安全相关的安全性缺陷检测问题，但引入了呈指数增长的路径遍历问题</p>
+<p><strong>类型理论</strong><br>借助自动机推导函数和变量的类型，判定对函数和变量的访问是否符合预先设定的缺陷类型规则，适用于控制流敏感的程序分析，能识别程序中指针变量的别名问题，而且可判定部分条件竞争安全性缺陷，但只能作为提升静态分析效率的辅助技术</p>
+<p><strong>模型检验</strong><br>利用自动机或数值向量描述软件代码的安全缺陷，类型覆盖率高，但面I临着程序状态空间的遍历问题，在大规模代码的检测上困难较大，并且仍然存在虚报率高的问题</p>
+<p><strong>抽象解释</strong><br>通过定义不同的抽象域，大大缩减了测试目标的状态空间，解决了循环结构中变量边界值的估计，但无法有效追踪变量之间的约束关系，在路径可行性判定上依然存在不足</p>
+<p><strong>以定理证明为基础的数据约束关系求解技术</strong><br>克服虚报率高的问题，但空间消耗大，目前只能适应小规模代码测试。</p>
+<p>PolySpace使用的是目前最新的语义分析技术，它依靠大量的数学定理提供的规则分析软件的动态行为。<br>简单地理解，语义分析技术可以通过静态的方法，能够发现动态的运行时错误。 </p>
+<p>PolySpace 代码静态分析所基于的理论：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/methods.jpg" alt="avatar">   </p>
+<h2 id="为什么要这样做"><a href="#为什么要这样做" class="headerlink" title="为什么要这样做"></a>为什么要这样做</h2><p>Edsger Dijkstra ，一位计算机科学先驱曾经说过：<br>软件测试可以用于发现软件的缺陷，但是无法知道软件没有缺陷。<br>我们不能将将没有不通过的测试作为软件质量的证据，这是错误的认知。<br>软件测试只能证明软件有缺陷，而不能证明没有。<br>如果要通过测试手段证明没有缺陷，这一过程将永远无法结束，会一直处理证明的过程中。     </p>
+<p>Polyspace的7个关键优势 ：    </p>
+<ol>
+<li><p>及时反映给开发人员。<br>Polyspace提供详细的信息，如变量在代码具体某一行的范围，潜在的溢出及其发生的条件和死代码。<br>这些信息可以帮助你强制遵循如MISRA®的编码规范。</p>
+</li>
+<li><p>聚焦在单元测试策略。<br>通过证明在所有可能输入的情况下没有严重缺陷，Polyspace可以减少并指导单元测试开发工作。</p>
+</li>
+<li><p>变量同时访问缺陷检测。<br>Polyspace证明多线程<br>应用程序中没有争用条件(race condition)，并且跟踪源代码的缺陷。</p>
+</li>
+<li><p>数据流和控制流信息记录在案。<br>Polyspace提供详细的控制流和数据流信息，详尽而完善的语义分析。</p>
+</li>
+<li><p>服从功能安全标准。<br>Polyspace使用错误查找，代码验证和标准检查来帮助识别和避免安全漏洞并遵守CERT C，ISO 17961 和 CWE 等标准。<br>它可以证明黑客利用的安全漏洞不存在，例如缓冲区溢出，非法指针解除引用和未初始化的变量。</p>
+</li>
+<li><p>可作为鉴定标准的证物。<br>Polyspace通过了TÜV SÜD鉴定，能够用于如ISO 26262, IEC 61508和IEC 62304这些需要符合功能安全标准的开发流程。<br>同时，Polyspace可作为DO-178B/C可被鉴定的工具。您可以获得包括形式化方法、控制流数据流和数据范围检查鉴定证物，而这些是其他工具无法提供的。     </p>
+</li>
+<li><p>和基于模型的设计有机结合。<br>Polyspace是基于模型的设计工具链的一部分，提供与Simulink®和Stateflow®模型的追溯。    </p>
+</li>
+</ol>
+<p>以上总结的7个优势的介绍来自于 Mathworks 官方 。    </p>
+<p>为什么要使用像Polyspace这种静态检测形式化验证工具：<br>如以上官方列举的7个优势。我个人的理解是：<br>1 它可以发现很多人工几乎不可能发现的潜在的风险<br>我在项目中使用Polyspace进行代码静态检测有过实际体会，<br>它对潜在的代码风险检测能力之高令人惊叹，有些隐藏特别深的问题都被找到，<br>如果用人来审查或者动态测试这几乎是不可能被发现的问题 。<br>2 它虽然也不可能证明 “软件没有缺陷” ，但它可以证明软件已经符合了某些安全规范。        </p>
+<h2 id="Polyspace-简介"><a href="#Polyspace-简介" class="headerlink" title="Polyspace 简介"></a>Polyspace 简介</h2><p>Polyspace 软件中包含两套工具 Bug Finder 和  Code Prover<br>Polyspace Bug Finder VS Polyspace Code Prover ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/vs.jpg" alt="avatar">   </p>
+<p>它们所能检测到以下的缺陷 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/tools.jpg" alt="avatar"><br>Code Prover :<br><strong>Green Check</strong>:  Reliable<br><strong>Red Check</strong>  : Faulty<br><strong>Gray Check</strong> : Unreachable code<br><strong>Orange Check</strong>  :  unproven :           </p>
+<ul>
+<li>1    Division by zero    </li>
+<li>2    Illegally dereferenced pointer     </li>
+<li>3    Invalid shift operations     </li>
+<li>4    Invalid use of standard library routine     </li>
+<li>5    Non-initialized local variable     </li>
+<li>6    Non-initialized pointer     </li>
+<li>7    Non-initialized variable     </li>
+<li>8    Out of bounds array index     </li>
+<li>9    Overflow    </li>
+</ul>
+<p>如 Polyspace Code Prover 的检测报告:<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/results.jpg" alt="avatar">   </p>
+<p>Bug Finder :<br>Defect 分为以下类型，每种类型中又有多条子情形，并且实际检测过程中根据影响程序可分High , Medium 和 Low 三种 Risk 等级 :     </p>
+<ul>
+<li><p>Numerical Defects    </p>
+</li>
+<li><p>Static Memory Defects    </p>
+</li>
+<li><p>Dynamic Memory Defects    </p>
+</li>
+<li><p>C++ Exception Defects    </p>
+</li>
+<li><p>Programming Defects    </p>
+</li>
+<li><p>Data Flow Defects    </p>
+</li>
+<li><p>Security Defects    </p>
+</li>
+<li><p>Cryptography Defects    </p>
+</li>
+<li><p>Tainted Data Defects    </p>
+</li>
+<li><p>Concurrency Defects    </p>
+</li>
+<li><p>Object Oriented Defects    </p>
+</li>
+<li><p>Performance Defects    </p>
+</li>
+<li><p>Resource Management Defects     </p>
+</li>
+<li><p>Good practice   </p>
+<p>其详细介绍建议参考官方文档 “Polyspace® Bug Finder™ Reference”      </p>
+</li>
+</ul>
+<p>软件默认选项 default 时以下几个选项不参与检测:          </p>
+<ul>
+<li>Security Defects    </li>
+<li>Cryptography Defects  </li>
+<li>Tainted Data Defects   </li>
+<li>Performance Defects   </li>
+<li>Good practice  </li>
+</ul>
+<p><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/default.jpg" alt="avatar">   </p>
+<h2 id="Polyspace-使用"><a href="#Polyspace-使用" class="headerlink" title="Polyspace 使用"></a>Polyspace 使用</h2><p>操作与配置起来比较简单，就几个步骤，最主要的是要把源码的包含依赖关系处理好，否则分析的时候报错就会被中断。<br>如果是单机版你可以选择通过 makefile 推导分析，也可以手动建立一个 project 来分析 。 也可以把 Polyspace 和第三方IDE环境集成，如 Eclipse , Visual Studio 。      </p>
+<p>Bug Finder 是函数级别的分析，同时对整体依赖性不很强，可以手动划分成模块，单独分析。<br>Code Prover 更像是应用层面的总体分析，其对整体依赖性更强。<br>另外 Polyspace 对代码量也有偏好，建议模块分析的代码量不要超过 5 万行，否则随着代码量的增加分析所消耗的时间将以指数级增加。     </p>
+<p>也可以通过 Jenkins 或 Bamboo把 Polyspace部署到服务器上，有代码被递交或者在某个设置时间点就会被自动触发分析，实现离线分析，自动化、持续集成 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/server.jpg" alt="avatar">   </p>
+<p>可以通过 Access 看板查看整体结果 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/access.jpg" alt="avatar">   </p>
+<p>还可以分配缺陷任务，邮件通知到人。<br>可以在浏览器中查看 Polyspace 的结果 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/brows.jpg" alt="avatar"><br>主要用于 10 到100 人规模的团队 。</p>
+<p>Polyspace 对编译器的支持 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/compile.jpg" alt="avatar">   </p>
+<p>Polyspace 所适用的行业如下图 ：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/tmt.jpg" alt="avatar">   </p>
+<p>一些案例：       </p>
+<ul>
+<li><p>Miracor 使用 Polyspace 对 III 类医疗设备软件消除运行时错误并缩短了的测试间 。       </p>
+</li>
+<li><p>CSEE 工程师使用 Polyspace 产品在短几个小时内分析 了15,000 行代码。 过去，对系统的验证（包括重读源代码和安全性分析）需要三到四个月 。     </p>
+</li>
+</ul>
+<p>使用 Polyspace 可以进行 ICE 61508 ， ISO 26262 ，EN 50128 ， IEC 62304 认证：<br><img src="https://gitee.com/oceanstack/image/raw/master/polyspace/spec.jpg" alt="avatar">   </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/float_pi/" rel="prev" title="$\pi$ = 3.14159274f ?">
+                  <i class="fa fa-chevron-left"></i> $\pi$ = 3.14159274f ?
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/fruits/" rel="next" title="如何选水果">
+                  如何选水果 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">etgo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+
+</body>
+</html>
