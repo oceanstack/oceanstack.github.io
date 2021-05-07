@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="本文介绍什么是ASPICE，它的起源、作用以及内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASPICE 浅述">
+<meta property="og:url" content="https://etgo.cc/aspice/index.html">
+<meta property="og:site_name" content="以太快跑">
+<meta property="og:description" content="本文介绍什么是ASPICE，它的起源、作用以及内容。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/dim.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/15504.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/relationship_en.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/relationship.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/process_en.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/process.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/capability_en.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/capability.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/between_en.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/between.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/fee.jpg">
+<meta property="article:published_time" content="2021-04-29T13:30:00.000Z">
+<meta property="article:modified_time" content="2021-05-07T15:03:44.426Z">
+<meta property="article:author" content="etgo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/aspice/dim.jpg">
+
+
+<link rel="canonical" href="https://etgo.cc/aspice/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>ASPICE 浅述 | 以太快跑</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">以太快跑</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Ether Go</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-me"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>me</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFASPICE"><span class="nav-number">1.</span> <span class="nav-text">什么是ASPICE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ASPICE%E7%9A%84%E6%9E%84%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">ASPICE的构成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E8%83%BD%E5%8A%9B%E7%A1%AE%E5%AE%9A"><span class="nav-number">2.1.</span> <span class="nav-text">过程能力确定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E5%8F%82%E8%80%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">过程参考模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E6%A1%86%E6%9E%B6"><span class="nav-number">2.3.</span> <span class="nav-text">度量框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%A9%E7%95%A5%E8%AF%8D"><span class="nav-number">4.</span> <span class="nav-text">缩略词</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="etgo"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">etgo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/oceanstack" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;oceanstack" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:chaunceyzhu@foxmail.com" title="E-Mail → mailto:chaunceyzhu@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/aspice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="etgo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="以太快跑">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ASPICE 浅述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-29 21:30:00" itemprop="dateCreated datePublished" datetime="2021-04-29T21:30:00+08:00">2021-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B1%BD%E8%BD%A6%E7%94%B5%E5%AD%90/" itemprop="url" rel="index"><span itemprop="name">汽车电子</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本文介绍什么是ASPICE，它的起源、作用以及内容。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="什么是ASPICE"><a href="#什么是ASPICE" class="headerlink" title="什么是ASPICE"></a>什么是ASPICE</h2><p>SPICE = Software Process Improvement and Capability dEtermination<br>可翻译为：软件过程改进和能力确定。<br>SPICE项目成立于1993年，以支持软件过程评估的国际标准的发展。<br>该项目的工作最终促使了ISO/IEC 15504的定稿。<br>基于标准化组织进一步工作，后有了新的ISO/IEC 330xx系列过程评估标准的推出。    </p>
+<p>ASPICE = Automotive SPICE<br>为汽车行业的SPICE  ，the industry-specific standard Automotive SPICE®<br>它是 2005 年推出， 当时基于ISO/IEC 15504。<br>是由汽车行业SIG (Special Interest Group) (是由汽车制造商所联合组成的特殊兴趣组)、采购论坛(Procurement Forum) 和 SPICE 用户组中的汽车制造商为倡议Automotive SPICE协商一致所制订的。<br>在 3.0 版本 (目前最新版是 3.1) 是由 VDA QMC 第13 工作组(VDA QMC Working Group 13)  和 Automotive SIG 共同制定 。<br>同时把 PRM 和 PAM 合并成为一个文档中 。<br>适用于嵌入式车载系统开发的过程能力执行符合性评估。<br>Automotive SPICE 包括 过程评估模型(PAM)和 过程参考模型(PRM) ，之后章节再详细介绍。<br>它是面向汽车行业的流程评估模型，其目的是：改善搭载于汽车上的电子控制单元(ECU)/车载电脑的质量。    </p>
+<p>Working Group 13 包括整车厂和供应商 ：<br>MW Group, BOSCH Group, Continental Automotive Systems, Daimler AG, Ford Werke GmbH (representing also Volvo Car Corp.), KNORR-BREMSE Group, VOLKSWAGEN AG and ZF Friedrichshafen AG   </p>
+<p>官方网址  <a target="_blank" rel="noopener" href="http://www.automotivespice.com/">www.automotivespice.com</a>    </p>
+<h2 id="ASPICE的构成"><a href="#ASPICE的构成" class="headerlink" title="ASPICE的构成"></a>ASPICE的构成</h2><h3 id="过程能力确定"><a href="#过程能力确定" class="headerlink" title="过程能力确定"></a>过程能力确定</h3><p>使用过程评估模型来确定过程能力的概念是基于一个二维框架。<br>第一个维度是由过程参考模型(过程维度)定义的过程来提供。<br>第二个维度是由进一步细分到过程属性的能力等级(能力维度)所构成。<br>过程属性提供了过程能力可度量的特性。<br>过程评估模型从过程参考模型中选择过程并增补了指标。这些指标支持收集客观证据，使评估师能够根据能力维度对过程进行评定分配。    </p>
+<p><img src="https://gitee.com/oceanstack/image/raw/master/aspice/dim.jpg" alt="avatar"> </p>
+<p>ISO/IEC TR 15504 Part-5，Part-6(定义系统开发和组织管理的流程)<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/15504.jpg" alt="avatar">    </p>
+<p>Process assessment model relationship<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/relationship_en.jpg" alt="avatar"><br>过程评估模型关系<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/relationship.jpg" alt="avatar">    </p>
+<h3 id="过程参考模型"><a href="#过程参考模型" class="headerlink" title="过程参考模型"></a>过程参考模型</h3><p>PRM Process Reference Model<br>所有过程依据过程类别进行分组<br>总共有3 个过程类别：主要生命周期过程，组织生命周期过程和支持生命周期过程。<br>Primary life cycle processes,<br>Organizational life cycle processes,<br>and Supporting life cycle processes.   </p>
+<ul>
+<li><p>主要生命周期过程类别<br>主要生命周期过程类别是由客户在从供应商获取产品时可使用的过程，以及供应商在回应客户和交付产品给客户时可使用的过程所组成，<br>包括规范、设计、开发、集成和测试所需的工程过程。   </p>
+</li>
+<li><p>支持生命周期过程类别<br>支持生命周期过程类别包括可由其他任何过程在生命周期内的多个节点使用的过程。   </p>
+</li>
+<li><p>组织生命周期过程类别<br>组织生命周期过程类别是由开发过程以及产品和资源资产的过程所组成。<br>这些过程、产品和资源资产在组织内的项目中使用时，将帮助组织实现其业务目标。   </p>
+</li>
+</ul>
+<p>Automotive SPICE process reference model - Overview<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/process_en.jpg" alt="avatar"><br>Automotive SPICE 过程参考模型 – 概览<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/process.jpg" alt="avatar">  </p>
+<h3 id="度量框架"><a href="#度量框架" class="headerlink" title="度量框架"></a>度量框架</h3><p>Measurement framework<br>度量框架为能力维度提供了必要的需求和规则。<br>它定义了一个可使评估人员确定对象过程的能力级别的模式。<br>同时提供了定义过程能力的有可度量特性的过程属性。<br>根据ISO/IEC 33020，共有6  个能力级别，包含 9 个过程属性：     </p>
+<p>有 6 个能力级别 :  </p>
+<ul>
+<li><p>等级 0 级:<br>不完整的过程  Incomplete process<br>过程未实施或未能实现其过程目的。  </p>
+</li>
+<li><p>等级 1 级:<br>已执行的过程 Performed process<br>已执行的过程实现其过程目的。  </p>
+</li>
+<li><p>等级 2 级:<br>已管理的过程 Managed process<br>以管理的方式(计划，监控和调整)来实施前述的已执行的过程，并且适当的建立、控制和维护该过程工作产品。  </p>
+</li>
+<li><p>等级 3 级：<br>已建立的过程 Established process<br>先述的已管理的过程，由能实现其过程成果的已定义的过程来实施。</p>
+</li>
+<li><p>等级 4 级：<br>可预测的过程 Predictable process<br>先述的已建立的过程，在定义的限值内可预测地运作以达成其过程成果。<br>识别量化管理需要，收集和分析度量数据，以识别波动的可查明原因。<br>采取纠正措施来解决波动的可查明原因。</p>
+</li>
+<li><p>等级 5 级：<br>创新的过程 Innovating process<br>先述的可预测的过程得到不断地改进，以适应组织的变化。</p>
+</li>
+</ul>
+<p>9 个过程属性 :<br>Process capability Level 0: Incomplete process<br>Process capability Level 1: Performed process<br>PA 1.1 Process performance process attribute<br>等级 0 级:不完整的过程<br>等级 1 级:已执行的过程<br>PA 1.1 过程实施过程属性  </p>
+<p>Process capability Level 2: Managed process<br>PA 2.1 Performance management process attribute<br>PA 2.2 Work product management process attribute<br>等级 2 级:已管理的过程<br>PA 2.1 实施管理过程属性<br>PA 2.2 工作产品管理过程属性  </p>
+<p>Process capability Level 3: Established process<br>PA 3.1 Process definition process attribute<br>PA 3.2 Process deployment process attribute<br>等级 3 级：已建立的过程<br>PA 3.1 过程定义过程属性<br>PA 3.2 过程部署过程属性  </p>
+<p>Process capability Level 4: Predictable process<br>PA 4.1 Quantitative analysis process attribute<br>PA 4.2 Quantitative control process attribute<br>等级 4 级：可预测的过程<br>PA 4.1 定量分析过程属性<br>PA 4.2 定量控制过程属性  </p>
+<p>Process capability Level 5: Innovating process<br>PA 5.1 Process innovation process attribute<br>PA 5.2 Process innovation implementation process attribute<br>等级 5 级：创新的过程<br>PA 5.1 过程创新过程属性<br>PA 5.2 过程创新实施过程属性  </p>
+<p>过程属性评定 :<br>评定尺度  </p>
+<ul>
+<li><p>N 没有达成<br>在被评估的过程中，有很少或没有证据表明定义的过程属性得到了达成。</p>
+</li>
+<li><p>P 部分达成<br>在被评估的过程中，有一些证据表明对定义的过程属性进行了执行，并得到一些达成。过程属性的达成在某些方面可能是不可预测的。  </p>
+</li>
+<li><p>L 主要达成<br>在被评估的过程中，有证据表明对定义的过程属性有系统地执行，并得到显著的达成。过程属性相关的一些弱点可存在于被评估的过程中。  </p>
+</li>
+<li><p>F 全部达成<br>在被评估的过程中，有证据表明对定义的过程属性有完整地和系统地执行，并得到充分的达成。没有过程属性相关的显著的弱点存在于被评估的过程中。  </p>
+</li>
+</ul>
+<p>Attributes rating scale: (ISO/IEC 33020)<br>N :    Attribute <strong><font color=red>Not</font></strong> achieved   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  (0%   -  15%)<br>P :   Attribute <strong><font color=Orange>Partially</font></strong> achieved &nbsp;&nbsp;&nbsp;&nbsp;     (16%  -  50%)<br>L :  Attribute <strong><font color=LawnGreen>Largely</font></strong>  achieved    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    (51%  -  85%)<br>F :   Attribute <strong><font color=Green>Fully</font></strong>  achieved &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        (86%  -  100%)    </p>
+<p>N :  没有达成  0～ ≤ 15%达成<br>P :  部分达成 &gt; 15% ～ ≤ 50% 达成<br>L :  主要达成 &gt; 50% ～ ≤ 85% 达成<br>F :  完全达成 &gt; 85% ～ ≤ 100% 达成     </p>
+<p>P- :  部分达成 - &gt; 15% ～ ≤ 32.5% 达成<br>P+ : 部分达成+ &gt; 32.5 ～ ≤ 50% 达成<br>L- :  主要达成 - &gt; 50% ～ ≤ 67.5% 达成<br>L+ :  主要达成 + &gt; 67.5% ～ ≤ 85% 达成   </p>
+<p>Process capability level model according to ISO/IEC 33020<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/capability_en.jpg" alt="avatar"><br>根据ISO/IEC 33020 的过程能力等级模型<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/capability.jpg" alt="avatar">    </p>
+<p>过程实施指标:<br>BP (Base Practice) 基本实践<br>WP (Work Product) 工作产品<br>BPs 和WPs 总是过程特定的，而不是通用的。<br>BPs 代表面向活动的指标。<br>WPs 代表面向结果的指标。<br>BP 和 WP 都是用来判断评估师在评估的实施中所收集和积累的客观证据。<br>BPs 和 WPs 是评估师可以使用的备选指标集。   </p>
+<p>PAM 为每个WP 提供了一组工作产品特性 WPC (Work Product Characteristic)         </p>
+<p>这些都旨在为评估师提供好的实践和最先进的知识的指南。所以，WP 和WPC 被认为是评估中可快速访问的信息源。<br>它们既不是“严格的必须”，也不是组织的规范。    </p>
+<p>过程能力指标:<br>GP (Generic Practice) 通用实践<br>GR (Generic Resource) 通用资源<br>GPs 和GRs 是与一个或多个PA 的达成相关的。<br>与过程实施指标相反，它们是通用类型，即它们适用于任何过程。    </p>
+<p>GP 和GR 的区别在于，在判断客观证据方面，前者是面向活动的指标，而后者是面向基础设施的指标。       </p>
+<p>评估师需要在评估中收集和积累支持过程能力指标的证据。<br>在这方面，GPs 和GRs 是评估师可以使用的备选指标集。   </p>
+<p>Relationship between assessment indicators and process capability<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/between_en.jpg" alt="avatar"><br>评估指标与过程能力的关系<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/between.jpg" alt="avatar">  </p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>3 个主要输入文档 :   </p>
+<ul>
+<li>Process Assessment Requirements :  ISO/IEC 33002        </li>
+<li>Automotive SPICE : PRM  PAM      </li>
+<li>Interpretation Guideline      </li>
+</ul>
+<p>Automotive SPICE 对术语的使用，遵循以下的优先顺序：<br>a) ISO/IEC 33001 关于评估相关的术语<br>b) ISO/IEC/IEEE 24765 和 ISO/IEC/IEEE 29119 术语<br>c) Automotive SPICE 所引入的术语         </p>
+<p>ISO/IEC 33001:2015<br>Information technology – Process assessment –Concepts and terminology<br>信息技术－过程评估－概念和术语          </p>
+<p>ISO/IEC/IEEE 24765:2010<br>Systems and software engineering – Vocabulary<br>系统和软件工程－词汇    </p>
+<p>ISO/IEC/IEEE 29119-1:2013<br>Software and systems engineering – Software testing – Part 1: Concepts and definitions<br>软件和系统工程－软件测试－第1 部分：概念和定义    </p>
+<p><a target="_blank" rel="noopener" href="http://www.automotivespice.com/">http://www.automotivespice.com/</a><br><a target="_blank" rel="noopener" href="https://vdaqmc.de/en/">https://vdaqmc.de/en/</a><br><a target="_blank" rel="noopener" href="http://www.spiceconference.com/">http://www.spiceconference.com/</a>   </p>
+<p>另外其评估师的认证费用参考：<br><img src="https://gitee.com/oceanstack/image/raw/master/aspice/fee.jpg" alt="avatar">  </p>
+<h2 id="缩略词"><a href="#缩略词" class="headerlink" title="缩略词"></a>缩略词</h2><p>QMC : Quality Management Center<br>VDA :  German Automotive Industry Association<br>IATF :  International Automotive Task Force<br>&nbsp;&nbsp;&nbsp;harmonizing QM methods and standards implemented at national level<br>ACQ :  Acquisition process group<br>AS :  Automotive SPICE<br>BP :  Base Practice<br>GP :  Generic Practice<br>GR :  Generic Resource<br>PA :  Process Attribute<br>PAM :  Process Assessment Model<br>PRM :  Process Reference Model<br>SUG :  Spice User Group<br>WP :  Work Product<br>WPC :  Work Product Characteristic<br>SIG :  Special Interest Group<br>SWE :  Software engineering process group<br>SUP :  Supporting process group<br>MAN :  Management process group<br>PIM :  Process improvement process group<br>REU :  Reuse process group<br>SPL :  Supply process group<br>SYS :  System engineering process group<br>ITT :  Invitation To Tender<br>MISRA :  Motor Industry Software Reliability Association<br>CCB :  Change Control Board<br>CFP :  Call For Proposals<br>CMMI : Capability Maturity Model Integration   </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/mbd_aspice/" rel="prev" title="模型开发实施ASPICE中的常见问题">
+                  <i class="fa fa-chevron-left"></i> 模型开发实施ASPICE中的常见问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">etgo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+
+</body>
+</html>
