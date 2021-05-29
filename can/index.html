@@ -57,7 +57,7 @@
 <link rel="canonical" href="https://etgo.cc/can/">
 
 
-<script class="page-configurations">
+<script data-pjax class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
@@ -193,7 +193,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -296,15 +296,24 @@
     <div class="post-body" itemprop="articleBody">
         <h2 id="CAN的发展"><a href="#CAN的发展" class="headerlink" title="CAN的发展"></a>CAN的发展</h2><p>   虽主要介绍数据链接层Data Link的内容，但先了解下CAN的发展，更有利于理解 ： </p>
 <ul>
-<li>1983年，Bosch开始研究汽车网络技术</li>
-<li>1986年，Bosch在SAE大会正式公布CAN协议</li>
-<li>1987年，Intel和Philips先后推出CAN控制器芯片</li>
-<li>1991年，Bosch颁布CAN2.0技术规范</li>
-<li>1991年，CAN总线最先在BenzS系列轿车上实现</li>
-<li>1993年，ISO颁布CAN国际标准ISO-11898</li>
-<li>1994年，由CiA组织举办第一届国际CAN大会(iCC)</li>
-<li>2005年，CiA在中国的第一场CAN研讨会 </li>
-<li>2012年，Bosch推出CANFD1.0 </li>
+<li><p>1983年，Bosch开始研究汽车网络技术</p>
+</li>
+<li><p>1986年，Bosch在SAE大会正式公布CAN协议</p>
+</li>
+<li><p>1987年，Intel和Philips先后推出CAN控制器芯片</p>
+</li>
+<li><p>1991年，Bosch颁布CAN2.0技术规范</p>
+</li>
+<li><p>1991年，CAN总线最先在BenzS系列轿车上实现</p>
+</li>
+<li><p>1993年，ISO颁布CAN国际标准ISO-11898</p>
+</li>
+<li><p>1994年，由CiA组织举办第一届国际CAN大会(iCC)</p>
+</li>
+<li><p>2005年，CiA在中国的第一场CAN研讨会 </p>
+</li>
+<li><p>2012年，Bosch推出CANFD1.0 </p>
+</li>
 <li><p>2015年，CANFD的ISO标准化  </p>
 <p><img src="https://gitee.com/oceanstack/image/raw/master/can/road.jpg" alt="avatar">  </p>
 <p>注意 CAN 是 BOSCH 公司的研究出来的标准，同时BOSCH CAN Specification Version 2.0 是在1991年出的，早于ISO标准，ISO-11898是1993年推出的。<br>其实对比 ISO-11898-1 会发现与 BOSCH CAN 2.0 几乎相同。所以之后介绍中如提到CAN 2.0的时候也可理解为同时也包含了ISO-11898-1。<br>另外BOSCH CAN 2.0 包括Part A 与 Part B 两部分，Part B的区别是除了讲标准帧格式standard message format 的同时又讲到了扩展帧格式extended message format 。<br>本文除主要介绍 CAN 2.0 ，也会涉及到简单介绍下 CANFD ，对于还有一下代的CANXL，其真正大规模使用估计要五到十年，所以在此先不作讨论。   </p>
@@ -431,7 +440,41 @@
 
   
   <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@next-theme/pjax@0.4.0/pjax.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '.page-configurations',
+    '.main-inner',
+    '.post-toc-wrap',
+    '.languages',
+    '.pjax'
+  ],
+  analytics: false,
+  cacheBust: false,
+  scrollRestoration: false,
+  scrollTo: !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  const hasTOC = document.querySelector('.post-toc');
+  document.querySelector('.sidebar-inner').classList.toggle('sidebar-nav-active', hasTOC);
+  document.querySelector(hasTOC ? '.sidebar-nav-toc' : '.sidebar-nav-overview').click();
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
 
   
 
@@ -444,9 +487,11 @@
 
 
 
+    <div class="pjax">
 
   
 
 
+    </div>
 </body>
 </html>

@@ -23,23 +23,29 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"etgo.cc","root":"/","images":"/images","scheme":"Pisces","version":"8.2.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="本文基于MathWorks组织的一次线上交流会，主题是ISO26262和ASPICE， 这部分的内容来自于上海先起的一位ASPICE® 高级评估师（Principal Assessor）的相关主题分享。">
+<meta name="description" content="本文简单介绍使用TI AWR1843 开发 77G 车载雷达所使用到的官方基本工具和文档。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="模型开发实施ASPICE中的常见问题">
-<meta property="og:url" content="https://etgo.cc/mbd_aspice/index.html">
+<meta property="og:title" content="77GAutoRadar开发-AWR1843 开发入门总览">
+<meta property="og:url" content="https://etgo.cc/awr77_overview/index.html">
 <meta property="og:site_name" content="以太快跑">
-<meta property="og:description" content="本文基于MathWorks组织的一次线上交流会，主题是ISO26262和ASPICE， 这部分的内容来自于上海先起的一位ASPICE® 高级评估师（Principal Assessor）的相关主题分享。">
+<meta property="og:description" content="本文简单介绍使用TI AWR1843 开发 77G 车载雷达所使用到的官方基本工具和文档。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/mbd_aspice/vda.jpg">
-<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/mbd_aspice/process.jpg">
-<meta property="article:published_time" content="2021-04-17T13:30:00.000Z">
-<meta property="article:modified_time" content="2021-05-07T13:29:42.350Z">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/CCS_overview.png">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/folder.png">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/sop.png">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/mrr_view.png">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/DCA1000.png">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/DCA1000_LVDS.png">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/AfterConfig_2DFFT.jpg">
+<meta property="og:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/PinMUX.png">
+<meta property="article:published_time" content="2020-02-22T11:30:00.000Z">
+<meta property="article:modified_time" content="2021-05-29T03:03:00.999Z">
 <meta property="article:author" content="etgo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/mbd_aspice/vda.jpg">
+<meta name="twitter:image" content="https://gitee.com/oceanstack/image/raw/master/awr77_overview/CCS_overview.png">
 
 
-<link rel="canonical" href="https://etgo.cc/mbd_aspice/">
+<link rel="canonical" href="https://etgo.cc/awr77_overview/">
 
 
 <script data-pjax class="page-configurations">
@@ -51,7 +57,7 @@
     lang   : 'en'
   };
 </script>
-<title>模型开发实施ASPICE中的常见问题 | 以太快跑</title>
+<title>77GAutoRadar开发-AWR1843 开发入门总览 | 以太快跑</title>
   
 
 
@@ -162,7 +168,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">内容简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ASPICE"><span class="nav-number">1.1.</span> <span class="nav-text">ASPICE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MBD"><span class="nav-number">1.2.</span> <span class="nav-text">MBD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8MBD%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F%EF%BC%8C%E8%BF%98%E9%9C%80%E8%A6%81%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1%E5%90%97%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">使用MBD开发方式，还需要详细设计吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MBD%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F%E4%B8%8B%EF%BC%8C%E5%88%B0%E5%BA%95%E8%A6%81%E5%85%B3%E6%B3%A8%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%E8%BF%98%E6%98%AF%E5%BB%BA%E6%A8%A1%E8%A7%84%E8%8C%83%EF%BC%9F"><span class="nav-number">2.2.</span> <span class="nav-text">MBD开发方式下，到底要关注编码规范还是建模规范？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8MBD%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F%E4%B8%8B%EF%BC%8C%E5%AF%B9%E4%BA%8E%E8%BD%AF%E4%BB%B6%E5%8D%95%E5%85%83%E7%9A%84%E8%B4%A8%E9%87%8F%E6%8C%87%E6%A0%87%E5%A6%82%E4%BD%95%E8%80%83%E8%99%91%EF%BC%9F"><span class="nav-number">2.3.</span> <span class="nav-text">在MBD开发方式下，对于软件单元的质量指标如何考虑？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E5%A6%82%E5%A4%8D%E6%9D%82%E5%BA%A6%EF%BC%8C%E8%BF%98%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%94%9F%E6%88%90%E7%9A%84%E4%BB%A3%E7%A0%81%E7%9A%84%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%90%97%EF%BC%9F"><span class="nav-number">2.4.</span> <span class="nav-text">比如复杂度，还需要考虑生成的代码的复杂度吗？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8MBD%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F%E4%B8%8B%EF%BC%8C%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E6%98%AF%E9%92%88%E5%AF%B9%E6%A8%A1%E5%9E%8B%E8%BF%98%E6%98%AF%E9%92%88%E5%AF%B9%E4%BB%A3%E7%A0%81%EF%BC%9F"><span class="nav-number">2.5.</span> <span class="nav-text">在MBD开发方式下，单元测试是针对模型还是针对代码？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%B1%82%E9%9D%A2%E7%9A%84%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E6%9B%BF%E4%BB%A3%E4%BB%A3%E7%A0%81%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%EF%BC%9F"><span class="nav-number">2.6.</span> <span class="nav-text">模型层面的集成测试是否可以替代代码集成测试？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ASPICE%E6%B5%81%E7%A8%8B%E4%B8%AD%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E3%80%81%E8%B5%B0%E6%9F%A5%E5%9C%A8MBD%E5%BC%80%E5%8F%91%E4%B8%AD%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="nav-number">2.7.</span> <span class="nav-text">ASPICE流程中的代码审查、走查在MBD开发中如何处理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ASPICE%E5%92%8CISO26262%E6%9C%89%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB%EF%BC%9F%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E4%B8%80%E8%B5%B7%E5%AE%9E%E6%96%BD%EF%BC%9F"><span class="nav-number">2.8.</span> <span class="nav-text">ASPICE和ISO26262有什么关系？是否可以一起实施？</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">关于工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%96%87%E6%A1%A3"><span class="nav-number">2.</span> <span class="nav-text">关于文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A5%E9%97%A8"><span class="nav-number">2.1.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5"><span class="nav-number">2.2.</span> <span class="nav-text">深入</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -232,7 +238,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://etgo.cc/mbd_aspice/">
+    <link itemprop="mainEntityOfPage" href="https://etgo.cc/awr77_overview/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/header.jpg">
@@ -245,7 +251,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          模型开发实施ASPICE中的常见问题
+          77GAutoRadar开发-AWR1843 开发入门总览
         </h1>
 
         <div class="post-meta-container">
@@ -256,7 +262,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-04-17 21:30:00" itemprop="dateCreated datePublished" datetime="2021-04-17T21:30:00+08:00">2021-04-17</time>
+      <time title="Created: 2020-02-22 19:30:00" itemprop="dateCreated datePublished" datetime="2020-02-22T19:30:00+08:00">2020-02-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -271,7 +277,7 @@
   
 </div>
 
-            <div class="post-description">本文基于MathWorks组织的一次线上交流会，主题是ISO26262和ASPICE， 这部分的内容来自于上海先起的一位ASPICE® 高级评估师（Principal Assessor）的相关主题分享。</div>
+            <div class="post-description">本文简单介绍使用TI AWR1843 开发 77G 车载雷达所使用到的官方基本工具和文档。</div>
         </div>
       </header>
 
@@ -279,20 +285,32 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="内容简介"><a href="#内容简介" class="headerlink" title="内容简介"></a>内容简介</h2><p>本文先简略提一下 ASPICE 和 MBD ，然后抛出几个 MBD 开发在实施 ASPICE 时的常见问题，但不作回答，以便读者自己思考。   </p>
-<h3 id="ASPICE"><a href="#ASPICE" class="headerlink" title="ASPICE"></a>ASPICE</h3><p>SPICE 是   Software Process Improvement and Capability dEtermination 的简称，中文意为 “软件过程改进和能力测定”。<br>基于此，国际标准化组织ISO、国际电工委员会IEC、信息技术委员会JTC1发起制定的ISO15504标准，以及之后ISO/IEC 330xx系列过程评估标准的推出。<br>而 ASPICE 是 Automotive SPICE ，它来自于 SPICE ，是专门针对汽车行业的。<br>此外医疗、航天等行业也有自己的行业SPICE标准。   </p>
-<h3 id="MBD"><a href="#MBD" class="headerlink" title="MBD"></a>MBD</h3><p>MBD 是 Model Based Development 的缩写，意为“基于模型的开发” ，在 VDA（德国汽车工业联合会） Guideline 中对 MBD 的描述有：<br>2.2 Application in specific environments<br>2.2.1 Model based development<br><strong>The approach of model-based development can be used for different purpose with the system and software development e.g. models can support the requirements elicitation process or support the development of complex algorithms .</strong>    </p>
-<p>MBD可以支持系统和软件的开发，因此MBD完全可以满足ASPICE的要求。  </p>
-<p><img src="https://gitee.com/oceanstack/image/raw/master/mbd_aspice/vda.jpg" alt="avatar">    </p>
-<p>MBD开发活动与通常的开发过程：<br><img src="https://gitee.com/oceanstack/image/raw/master/mbd_aspice/process.jpg" alt="avatar">   </p>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="使用MBD开发方式，还需要详细设计吗？"><a href="#使用MBD开发方式，还需要详细设计吗？" class="headerlink" title="使用MBD开发方式，还需要详细设计吗？"></a>使用MBD开发方式，还需要详细设计吗？</h3><p>–   </p>
-<h3 id="MBD开发方式下，到底要关注编码规范还是建模规范？"><a href="#MBD开发方式下，到底要关注编码规范还是建模规范？" class="headerlink" title="MBD开发方式下，到底要关注编码规范还是建模规范？"></a>MBD开发方式下，到底要关注编码规范还是建模规范？</h3><p>–   </p>
-<h3 id="在MBD开发方式下，对于软件单元的质量指标如何考虑？"><a href="#在MBD开发方式下，对于软件单元的质量指标如何考虑？" class="headerlink" title="在MBD开发方式下，对于软件单元的质量指标如何考虑？"></a>在MBD开发方式下，对于软件单元的质量指标如何考虑？</h3><p>–   </p>
-<h3 id="比如复杂度，还需要考虑生成的代码的复杂度吗？"><a href="#比如复杂度，还需要考虑生成的代码的复杂度吗？" class="headerlink" title="比如复杂度，还需要考虑生成的代码的复杂度吗？"></a>比如复杂度，还需要考虑生成的代码的复杂度吗？</h3><p>–   </p>
-<h3 id="在MBD开发方式下，单元测试是针对模型还是针对代码？"><a href="#在MBD开发方式下，单元测试是针对模型还是针对代码？" class="headerlink" title="在MBD开发方式下，单元测试是针对模型还是针对代码？"></a>在MBD开发方式下，单元测试是针对模型还是针对代码？</h3><p>–   </p>
-<h3 id="模型层面的集成测试是否可以替代代码集成测试？"><a href="#模型层面的集成测试是否可以替代代码集成测试？" class="headerlink" title="模型层面的集成测试是否可以替代代码集成测试？"></a>模型层面的集成测试是否可以替代代码集成测试？</h3><p>–   </p>
-<h3 id="ASPICE流程中的代码审查、走查在MBD开发中如何处理？"><a href="#ASPICE流程中的代码审查、走查在MBD开发中如何处理？" class="headerlink" title="ASPICE流程中的代码审查、走查在MBD开发中如何处理？"></a>ASPICE流程中的代码审查、走查在MBD开发中如何处理？</h3><p>–   </p>
-<h3 id="ASPICE和ISO26262有什么关系？是否可以一起实施？"><a href="#ASPICE和ISO26262有什么关系？是否可以一起实施？" class="headerlink" title="ASPICE和ISO26262有什么关系？是否可以一起实施？"></a>ASPICE和ISO26262有什么关系？是否可以一起实施？</h3><p>–   </p>
+        <h2 id="关于工具"><a href="#关于工具" class="headerlink" title="关于工具"></a>关于工具</h2><p><strong>CCS （Code Composer Studio ）</strong><br>Ti 的 IDE ， 调试代码用，功能很全很强大 。<br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/CCS_overview.png" alt="avatar">   </p>
+<p>建议把 mmwave_sdk 和 CCS 都装在默认目录下 。<br>如我所安装工具和依赖库：<br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/folder.png" alt="avatar"><br>其中 mmwave_automotive_toolbox 要在官网单独下 。    </p>
+<p><strong>Uniflash</strong><br>用来下载固件的工具，刷写固件前要把下图右下角 “SOP Controls” 中间的拨码开关拨到 “OFF” 位置。<br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/sop.png" alt="avatar">  </p>
+<p><strong>mRR_Viz_1_4</strong><br>可以结合 lab0007_medium_range_radar 工程，在 PC 上显示点云和聚类信息 。<br>依赖于 Matlab 运行时库  MCR ：<br>MCR_R2015aSP1_win64_installer.exe<br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/mrr_view.png" alt="avatar">       </p>
+<p><strong>DCA1000</strong><br>LVDS 抓取工具，分析原始ADC数据会用到，一般要结合Matlab来可视化分析<br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/DCA1000.png" alt="avatar"><br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/DCA1000_LVDS.png" alt="avatar"><br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/AfterConfig_2DFFT.jpg" alt="avatar">   </p>
+<p><strong>TI PinMux</strong><br> 管脚分配用，基本没有用到 。<br><img src="https://gitee.com/oceanstack/image/raw/master/awr77_overview/PinMUX.png" alt="avatar">   </p>
+<h2 id="关于文档"><a href="#关于文档" class="headerlink" title="关于文档"></a>关于文档</h2><h3 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h3><p>对于刚接触的话，推荐文档如  ：   </p>
+<p>swru506_MMWAVE-DEVPACK User’s Guide.pdf<br>spruim4b_xWR1843 Evaluation Module (xWR1843BOOST) Single-Chip mmWave Sensing Solution.pdf<br>关于开发板的简单介绍  ，20 来页 。     </p>
+<p>swru520c_AWR18xx-16xx-14xx Technical Reference Manual.pdf<br>芯片手册， 包含所有模块的细节，2900多页 。    </p>
+<p>SWRS222A_AWR1843 Single-Chip 77- to 79-GHz FMCW Radar Sensor datasheet (Rev. A).pdf<br>关于AWR1843芯片的 Overview 版， 80来页 。      </p>
+<p>spruex3u_TI-RTOS Kernel (SYSBIOS).pdf<br>关于 TI 自带操作系统讲解。   </p>
+<p>spraci4a_AWR1642AWR1843 Application Startup Sequence (Rev. A).pdf<br>应用程序引导启动的流程。      </p>
+<p>对于SDK参考\ti\mmwave_sdk_03_04_00_03 下的 ：<br>对于 \packages\ti\demo 要用串口配置参数后引导启动 。<br>\packages\ti\utils 是一些调试工具类代码。<br>\packages\ti\drivers<br>里面是驱动库源代码，每个模块都包含相关的示例。     </p>
+<p>swra555a_AWR1xxx and AWR22xx Data Path.pdf<br>数据格式传输送搬运方式。    </p>
+<p>同时要要在官网找下相关幻灯片介绍，或者看下视频，也可找 TI 的 FAE 要相关资料 。<br>如对 SDK 使用的介绍，对 DSP 雷达信号处理流程的介绍，对雷达原理等的介绍。    </p>
+<p>白皮书 共9份文档，感兴趣的都可以看看 ：<br>spyy001 Drone safety and productivity enabled by mmWave sensors .pdf<br>spyy002b Robust traffic and intersection monitoring using millimeter wave sensors (Rev. B).pdf<br>spyy003 AWR1243 sensor Highly integrated 76–81-GHz radar front-end for emerging ADAS app.pdf<br>spyy004 Fluid-level sensing using 77GHz millimeter wave.pdf<br>spyy006 AWR1642 77GHz Radar-on-Chip for Short-Range Radar Applications.pdf<br>spyy007 Complex base band arch. For FMCW radar systems (Auto) - IQ.pdf<br>spyy008 AWR1443 single chip radar for diverse proximity sensing applications.pdf<br>spyy009 TI smart sensors enable automated driving.pdf<br>zhcy075 毫米波传感器基础知识.pdf      </p>
+<p>swra552_Introduction to the DSP Subsystem in the AWR16xx.pdf<br>swra621_Introduction to the DSP Subsystem in the IWR6843.pdf<br>主要是信号处理流 ，EDMA搬运方式简介 。  </p>
+<p>链接 ：<br><a target="_blank" rel="noopener" href="https://www.ti.com.cn/tool/cn/MMWAVE-SDK#tech-docs">https://www.ti.com.cn/tool/cn/MMWAVE-SDK#tech-docs</a>    </p>
+<h3 id="深入"><a href="#深入" class="headerlink" title="深入"></a>深入</h3><p>再深入些的可研究：<br>swra553_Programming Chirp Parameters in TI Radar Devices.pdf<br>天线配置方式。    </p>
+<p>sprugs5b_KeyStone Architecture Enhanced Direct Memory Access (EDMA3) Controller (Rev. B).pdf<br>对 EDMA的深入系统介绍 。         </p>
+<p>SWRU526B_Radar Hardware Accelerator -HWA_ Part 1.pdf<br>SWRU526B_Radar Hardware Accelerator -HWA_ Part 2.pdf<br>对 HWA 的深入系统介绍。        </p>
+<p>DDI0363E_cortexr4_r1p3_trm.pdf<br>Cortex-R4 核的介绍，主要是结合汇编对寄存器的处理。      </p>
+<p>sprufe8b_TMS320C674x DSP CPU and Instruction Set Reference Guide.pdf<br>sprui04b_TMS320C6000 Optimizing Compiler v8.2.x User’s Guide.pdf<br>DSP指令和编译优化的介绍，涉及到性能优化时会用到。      </p>
+<p>spracf4_Self-Calibration in TI’s mmWave Radar Devices.pdf<br>一本十来页的小册子，功能安全时会用到 。     </p>
+<p>spra291_Fast Fourier Transform Algorithms of Real-Valued Sequences wthe TMS320 Platform .pdf<br>一本几十页的小册子，对快速傅里叶实现的讲解。     </p>
+<p>注：以上的所有是想到哪讲到哪，不一定系统和全面，实际开发过程中还是需具体情况多去官网查找资料以及跟FAE多沟通。      </p>
 
     </div>
 
@@ -306,13 +324,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/fruits/" rel="prev" title="如何选水果">
-                  <i class="fa fa-chevron-left"></i> 如何选水果
+                <a href="/life900months/" rel="prev" title="人生900个月 一张A4纸">
+                  <i class="fa fa-chevron-left"></i> 人生900个月 一张A4纸
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/aspice/" rel="next" title="ASPICE 浅述">
-                  ASPICE 浅述 <i class="fa fa-chevron-right"></i>
+                <a href="/awr77_edma/" rel="next" title="77GAutoRadar开发-AWR1843 EDMA">
+                  77GAutoRadar开发-AWR1843 EDMA <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
